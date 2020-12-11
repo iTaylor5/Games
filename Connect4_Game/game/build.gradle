@@ -1,0 +1,26 @@
+// TO RUN: gradle run --console=plain -q
+
+plugins {
+    id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+apply plugin: 'application'
+apply plugin: "org.openjfx.javafxplugin"
+
+javafx {
+    version = "15"
+    modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.swing', 'javafx.base' ]
+}
+
+mainClassName = 'ui.DriverMain'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies { }
+
+run{
+    standardInput = System.in
+}
