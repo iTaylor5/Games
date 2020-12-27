@@ -1,0 +1,10 @@
+// gradle run --console=plain -q
+
+apply plugin: 'application'
+
+mainClassName = 'Main'
+
+run{
+    standardInput = System.in
+}
+
