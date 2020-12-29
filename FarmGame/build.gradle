@@ -7,4 +7,3 @@ mainClassName = 'Main'
 run{
     standardInput = System.in
 }
-

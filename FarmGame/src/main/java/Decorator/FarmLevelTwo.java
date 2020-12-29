@@ -7,8 +7,8 @@ import java.util.List;
 public class FarmLevelTwo extends FarmDecorator{
 
     public FarmLevelTwo(Farm homeFarm){
-
         super(homeFarm);
+        homeFarm.incrementLevel();
     }
 
     @Override
@@ -39,5 +39,20 @@ public class FarmLevelTwo extends FarmDecorator{
     @Override
     public int getNumberOfFields() {
         return this.homeFarm.getNumberOfFields();
+    }
+
+    @Override
+    public void incrementLevel() {
+        this.homeFarm.incrementLevel();
+    }
+
+    @Override
+    public int getFarmLevel() {
+        return this.homeFarm.getFarmLevel();
+    }
+
+    @Override
+    public void setFarmLevel(int farmLevel) {
+        this.homeFarm.setFarmLevel(farmLevel);
     }
 }

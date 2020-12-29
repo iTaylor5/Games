@@ -11,27 +11,14 @@ public class FarmImpl implements Farm {
     private Mediator mediator;
     private List<Field> farmFields;
     private String name;
-    public int farmLevel;
+    private int farmLevel;
 
     public FarmImpl(Mediator newMediator, String farmName){
         farmFields = new LinkedList<>();
         this.name = farmName;
         this.mediator = newMediator;
-
         mediator.addFarm(this);
-
         farmLevel = 1;
-    }
-
-    public FarmImpl(Mediator newMediator){
-        farmFields = new LinkedList<>();
-        this.name = "OriginalFarm";
-        this.mediator = newMediator;
-
-        mediator.addFarm(this);
-
-        farmLevel = 1;
-
     }
 
     @Override
@@ -39,7 +26,10 @@ public class FarmImpl implements Farm {
         double turnOver = 0;
 
         for(Field field : farmFields){
-            turnOver += field.getProfit();
+            if(field.canHarvest()){
+                turnOver += field.getProfit();
+                field.setHarvest(false);
+            }
         }
 
         return turnOver;
@@ -58,12 +48,25 @@ public class FarmImpl implements Farm {
         return farmFields.size();
     }
 
+    @Override
+    public void incrementLevel() {
+        setFarmLevel(getFarmLevel()+1);
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getFarmLevel() {
+        return farmLevel;
+    }
+
+    public void setFarmLevel(int farmLevel) {
+        this.farmLevel = farmLevel;
     }
 
 }
