@@ -235,15 +235,17 @@ public class PlayGame implements Mediator {
     @Override
     public void harvest(Farm farm) {
 
-        double turnOver = 0;
-
-        for(Field field : farm.getFields()){
-            if(field.canHarvest()){
-                turnOver += field.getProfit();
-                field.setHarvest(false);
-            }
-        }
-        setGold(getGold() + (turnOver * farm.getBonus()));
+//        double turnOver = 0;
+//
+//        for(Field field : farm.getFields()){
+//            if(field.canHarvest()){
+//                turnOver += field.getProfit();
+//                field.setHarvest(false);
+//            }
+//        }
+//        setGold(getGold() + (turnOver * farm.getBonus()));
+        setGold(getGold() + farm.getBank());
+        farm.setBank(0);
     }
 
     @Override

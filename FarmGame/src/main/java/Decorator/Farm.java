@@ -28,6 +28,10 @@ public interface Farm {
 
     double getBonus();
 
+    double getBank();
+
+    void setBank(double amount);
+
 }
 //public abstract class Farm {
 //    double harvest();

@@ -42,19 +42,22 @@ public class FarmImpl implements Farm {
 
     public void harvest(){
 
+        double turnOver = 0;
+
+        for(Field field : farmFields){
+            if(field.canHarvest()){
+                turnOver += field.getProfit();
+                field.setHarvest(false);
+            }
+        }
+        System.out.println("In harvest turn over is now: " + turnOver);
+        turnOver = turnOver * bonus;
+        System.out.println("In harvest turn over is now: " + turnOver);
+
+        setBank(getBank() + turnOver);
+
+        System.out.println("&& Bank is now: " + getBank());
         mediator.harvest(this);
-//        double turnOver = 0;
-//
-//        for(Field field : farmFields){
-//            if(field.canHarvest()){
-//                turnOver += field.getProfit();
-//                field.setHarvest(false);
-//            }
-//        }
-//
-//        turnOver = turnOver * bonus;
-//
-//        setBank( getBank() + turnOver);
     }
 
     public void addField(Field field){
@@ -95,8 +98,8 @@ public class FarmImpl implements Farm {
         return bank;
     }
 
-    public void setBank(double bank) {
-        this.bank = bank;
+    public void setBank(double amount) {
+        this.bank = amount;
     }
 
     public double getBonus() {
