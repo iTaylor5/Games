@@ -128,7 +128,8 @@ public class PlayGame implements Mediator {
                 }
                 index++;
             }
-            gold += obj.harvest();
+            obj.harvest();
+            //gold += obj.harvest();
         }
         System.out.println("\n\t$$$ Your gold is: " + gold + " $$$\n");
     }
@@ -231,35 +232,18 @@ public class PlayGame implements Mediator {
         this.farms = farms;
     }
 
-    /** Added with the implements Mediator*/
     @Override
-    public double harvest() {
-        return 0;
-    }
+    public void harvest(Farm farm) {
 
-    @Override
-    public void addField(Field field) {
+        double turnOver = 0;
 
-    }
-
-    @Override
-    public List<Field> getFields() {
-        return null;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public void setName(String name) {
-
-    }
-
-    @Override
-    public int getNumberOfFields() {
-        return 0;
+        for(Field field : farm.getFields()){
+            if(field.canHarvest()){
+                turnOver += field.getProfit();
+                field.setHarvest(false);
+            }
+        }
+        setGold(getGold() + (turnOver * farm.getBonus()));
     }
 
     @Override
@@ -267,4 +251,28 @@ public class PlayGame implements Mediator {
         farms.add(farm);
     }
 
+//    @Override
+//    public void addField(Field field) {
+//
+//    }
+
+//    @Override
+//    public List<Field> getFields() {
+//        return null;
+//    }
+
+//    @Override
+//    public String getName() {
+//        return null;
+//    }
+
+//    @Override
+//    public void setName(String name) {
+//
+//    }
+//
+//    @Override
+//    public int getNumberOfFields() {
+//        return 0;
+//    }
 }

@@ -5,8 +5,8 @@ import Factory.Field;
 import java.util.List;
 
 public interface Farm {
-    double harvest();
-    //void harvest();
+    //double harvest();
+    void harvest();
 
     void addField(Field field);
 
@@ -23,6 +23,10 @@ public interface Farm {
     int getFarmLevel();
 
     void setFarmLevel(int farmLevel);
+
+    void setBonus(double bonus);
+
+    double getBonus();
 
 }
 //public abstract class Farm {

@@ -105,7 +105,6 @@ public class LivestockField implements Field {
 		dayCycle();
 		nightCycle();
 
-
 	}
 	public void dayCycle(){
 		System.out.println("\t ~Sunrise~");
@@ -178,5 +177,4 @@ public class LivestockField implements Field {
 		//TODO: Need to implement
 		return false;
 	}
-
 }

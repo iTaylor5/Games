@@ -6,17 +6,18 @@ import Factory.Field;
 import java.util.List;
 
 public interface Mediator {
-    double harvest();
 
-    void addField(Field field);
+    void harvest(Farm farm);
 
-    List<Field> getFields();
+    //void addField(Field field);
 
-    String getName();
+    //List<Field> getFields();
 
-    void setName(String name);
+    //String getName();
 
-    int getNumberOfFields();
+//    void setName(String name);
+//
+//    int getNumberOfFields();
 
     void addFarm(Farm farm);
 

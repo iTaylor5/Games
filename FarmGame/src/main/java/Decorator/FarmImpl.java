@@ -12,6 +12,8 @@ public class FarmImpl implements Farm {
     private List<Field> farmFields;
     private String name;
     private int farmLevel;
+    private double bank;
+    private double bonus;
 
     public FarmImpl(Mediator newMediator, String farmName){
         farmFields = new LinkedList<>();
@@ -19,22 +21,40 @@ public class FarmImpl implements Farm {
         this.mediator = newMediator;
         mediator.addFarm(this);
         farmLevel = 1;
+        setBonus(1);
     }
 
-    @Override
-    public double harvest() {
+//    @Override
+//    public double harvest() {
+//
+//        mediator.harvest(this);
+////        double turnOver = 0;
+////
+////        for(Field field : farmFields){
+////            if(field.canHarvest()){
+////                turnOver += field.getProfit();
+////                field.setHarvest(false);
+////            }
+////        }
+////
+////        return turnOver;
+//    }
 
-        mediator.harvest();
-        double turnOver = 0;
+    public void harvest(){
 
-        for(Field field : farmFields){
-            if(field.canHarvest()){
-                turnOver += field.getProfit();
-                field.setHarvest(false);
-            }
-        }
-
-        return turnOver;
+        mediator.harvest(this);
+//        double turnOver = 0;
+//
+//        for(Field field : farmFields){
+//            if(field.canHarvest()){
+//                turnOver += field.getProfit();
+//                field.setHarvest(false);
+//            }
+//        }
+//
+//        turnOver = turnOver * bonus;
+//
+//        setBank( getBank() + turnOver);
     }
 
     public void addField(Field field){
@@ -71,4 +91,19 @@ public class FarmImpl implements Farm {
         this.farmLevel = farmLevel;
     }
 
+    public double getBank() {
+        return bank;
+    }
+
+    public void setBank(double bank) {
+        this.bank = bank;
+    }
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
 }

@@ -9,11 +9,17 @@ public class FarmLevelTwo extends FarmDecorator{
     public FarmLevelTwo(Farm homeFarm){
         super(homeFarm);
         homeFarm.incrementLevel();
+        homeFarm.setBonus(1.1);
     }
 
+//    @Override
+//    public double harvest(){
+//        return  this.homeFarm.harvest() * 1.1;
+//    }
+
     @Override
-    public double harvest(){
-        return  this.homeFarm.harvest() * 1.1;
+    public void harvest(){
+        this.homeFarm.harvest();
     }
 
     @Override
@@ -54,5 +60,15 @@ public class FarmLevelTwo extends FarmDecorator{
     @Override
     public void setFarmLevel(int farmLevel) {
         this.homeFarm.setFarmLevel(farmLevel);
+    }
+
+    @Override
+    public void setBonus(double bonus) {
+        this.homeFarm.setBonus(1.1);
+    }
+
+    @Override
+    public double getBonus() {
+        return this.homeFarm.getBonus();
     }
 }
