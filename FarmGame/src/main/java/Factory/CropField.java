@@ -68,6 +68,7 @@ public class CropField implements Field {
 	@Override
 	public void catchDisease() {
 		Random random = new Random();
+
 		if(isDiseased()){
 			System.out.println("This field has been diseased for a full cycle." +
 					" It is now destroyed");

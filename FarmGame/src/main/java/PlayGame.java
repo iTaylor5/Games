@@ -24,12 +24,12 @@ public class PlayGame implements Mediator {
         reader = new Scanner(System.in, "UTF-8");  // Reading from System.in
         System.out.println("\n\tRunning the Game...");
 
-        int cycleNUmber = 0;
+        int cycleNUmber = 1;
 
         boolean gameContinue = true;
 
         while(gameContinue){
-            System.out.println("\n---> This is cycle number: " + cycleNUmber + " <---\n");
+            System.out.println("\n---> Beginning cycle number: " + cycleNUmber + " <---\n");
 
             for ( Farm obj : farms){
                 System.out.println("FARM NAME: " + obj.getName() + ", farm level is Level " +
@@ -40,6 +40,8 @@ public class PlayGame implements Mediator {
                 } else {
                     System.out.println("This farm has " + obj.getNumberOfFields() + " fields");
                 }
+
+                System.out.println(" %% Summary of this farm's fields: %% ");
 
                 for(Field field : obj.getFields()){
                     System.out.println("\n************************************** \n");
@@ -53,9 +55,7 @@ public class PlayGame implements Mediator {
                 if((obj.getFields().size() < 2) && (getGold() >= 50)){
                     System.out.println("(yes/no) This farm only has room to add another field. " +
                             "Would you like to do this?");
-
                     String response = reader.nextLine();
-
                     if(response.equalsIgnoreCase("yes")){
                         createField(obj);
                     }
@@ -87,7 +87,7 @@ public class PlayGame implements Mediator {
 
     /**
      * Simply checks if there are any  fields where the money can be generated.
-     * @return
+     * @return ture to continue game and false for game over.
      */
     public boolean checkIfGameOver(){
 
@@ -144,7 +144,7 @@ public class PlayGame implements Mediator {
     public void createFirstFarm(){
         Scanner reader = new Scanner(System.in, "UTF-8");  // Reading from System.in
 
-        System.out.println("We shall beginning the game with 200 gold!!!\n");
+        System.out.println("We shall begin the game with 200 gold!!!\n");
 
         System.out.println("Lets create a Farm");
         System.out.println("Please enter a name for the farm...");
@@ -154,7 +154,6 @@ public class PlayGame implements Mediator {
         System.out.println("~~~ Farm Level One is allowed 2 fields ~~~");
         System.out.println("It will cost you 100 gold to prepare these two fields.\n");
         System.out.println("---------------------------------------- ");
-
 
         for (int i = 0; i < 2; i++){
             System.out.println("Let's chose the next field type.");
@@ -223,6 +222,7 @@ public class PlayGame implements Mediator {
         this.gold = gold;
     }
 
+    @Override
     public List<Farm> getFarms() {
         return farms;
     }

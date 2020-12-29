@@ -20,5 +20,6 @@ public interface Mediator {
 
     void addFarm(Farm farm);
 
+    List<Farm> getFarms();
 
 }

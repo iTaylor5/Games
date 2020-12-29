@@ -23,6 +23,8 @@ public class FarmImpl implements Farm {
 
     @Override
     public double harvest() {
+
+        mediator.harvest();
         double turnOver = 0;
 
         for(Field field : farmFields){

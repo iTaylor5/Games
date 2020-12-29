@@ -9,4 +9,5 @@ public class MaizeField extends CropField {
         setCyclesTillHarvest(8);
         setCycleSincePlanted(0);
     }
+
 }
