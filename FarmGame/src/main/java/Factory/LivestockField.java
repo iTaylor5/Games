@@ -2,6 +2,7 @@ package Factory;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class LivestockField implements Field {
 
@@ -11,52 +12,38 @@ public class LivestockField implements Field {
 	private final int maxNumberOfLivestock;
 	boolean destroyed = false;
 	private boolean diseased;
+	private boolean harvest;
+	private Scanner reader;
 
 	private LinkedList<Cow> cows;
 	private LinkedList<Bull> bulls;
+	private LinkedList<Livestock> livestock;
+	private LinkedList<Livestock> animalsToBeSlaughtered;
 
 	public LivestockField(String type, int numOfAnimals){
 		this.type = type;
 		this.maxNumberOfLivestock = numOfAnimals;
-
 		cows = new LinkedList<>();
 		bulls = new LinkedList<>();
-	}
-
-	public LinkedList<Cow> getCows() {
-		return cows;
-	}
-
-	public void addCow(Cow pCows) {
-		cows.add(pCows);
-	}
-
-	public LinkedList<Bull> getBulls() {
-		return bulls;
-	}
-
-	public void addBull(Bull pBull) {
-		bulls.add(pBull);
+		livestock = new LinkedList<>();
+		animalsToBeSlaughtered = new LinkedList<>();
+		reader = new Scanner(System.in, "UTF-8");
 	}
 
 	public void printLivestockInfo(){
 
+		int count = 0;
 		System.out.println("\n---------------------------------------- ");
-		for(Bull b : bulls){
-			System.out.println("Type: " + b.getType());
-			System.out.println("Price at slaughter: " + b.getPriceAtSlaughter());
-			System.out.println("Fully sized: " + b.isFullySized());
-			System.out.println("Age: " + b.getAge());
-		}
 
-		System.out.println("\n---------------------------------------- ");
-		for(Cow c : cows){
-			System.out.println("Type: " + c.getType());
-			System.out.println("Price at slaughter: " + c.getPriceAtSlaughter());
-			System.out.println("Fully sized: " + c.isFullySized());
-			System.out.println("Age: " + c.getAge());
+		for(Livestock animal : livestock){
+			System.out.print("Number: " + count);
+			System.out.print(", type: " + animal.getType());
+			System.out.print(", price at slaughter: " + animal.getPriceAtSlaughter());
+			System.out.print(", fully sized: " + animal.isFullySized());
+			System.out.println(", and age: " + animal.getAge());
+			System.out.println("");
+			count++;
 		}
-		System.out.println("---------------------------------------- ");
 	}
 
 	@Override
@@ -69,14 +56,9 @@ public class LivestockField implements Field {
 
 		double totalProfit = 0;
 
-		for(Bull b : bulls){
-			totalProfit += b.getCurrentCostOfAnimal();
+		for(Livestock animal : livestock){
+			totalProfit += animal.getCurrentCostOfAnimal();
 		}
-
-		for(Cow c : cows){
-			totalProfit += c.getCurrentCostOfAnimal();
-		}
-		// TODO: Implement Sheep
 
 		return totalProfit;
 	}
@@ -106,14 +88,38 @@ public class LivestockField implements Field {
 		nightCycle();
 
 	}
+
 	public void dayCycle(){
 		System.out.println("\t ~Sunrise~");
-//		if (getCyclesTillHarvest() == 0 && !destroyed) {
-//			System.out.println("Time to harvest!!!");
-//			harvest = true;
-//			setCyclesTillHarvest(getAmountOfCyclesBeforeHarvest());
-//			setCycleSincePlanted(0);
-//		}
+		System.out.println("(yes/no) Would you like to slaughter?");
+		String response = reader.nextLine();
+		if(response.equalsIgnoreCase("yes")){
+			slaughterAnimals();
+		}
+	}
+
+	public void slaughterAnimals(){
+
+		while(true){
+			System.out.println("\nEnter the number corresponding to the livestock you would " +
+					"like to sell or -1 to exit.");
+			printLivestockInfo();
+			int num = reader.nextInt();
+			if(num == -1){
+				break;
+			}else if(num >= 0 && num <= getLivestock().size()-1){
+				Livestock animal = getLivestock().get(num);
+				getLivestock().remove(num);
+
+				System.out.println("We will slaughter this " + animal.getType() +
+						" and the price is " + animal.getCurrentCostOfAnimal());
+
+				addAnimalToBeSlaughtered(animal);
+				setHarvest(true);
+			}else {
+				System.out.println("Invalid input.");
+			}
+		}
 	}
 
 	public void nightCycle(){
@@ -133,13 +139,12 @@ public class LivestockField implements Field {
 
 	@Override
 	public boolean canHarvest() {
-		//TODO: Need to implement
-		return false;
+		return harvest;
 	}
 
 	@Override
 	public void setHarvest(boolean pHarvest) {
-		//TODO: Need to implement
+		harvest = pHarvest;
 	}
 
 	@Override
@@ -176,5 +181,37 @@ public class LivestockField implements Field {
 	public boolean isDestroyed() {
 		//TODO: Need to implement
 		return false;
+	}
+
+	public LinkedList<Cow> getCows() {
+        return cows;
+    }
+
+    public void addCow(Cow pCows) {
+        cows.add(pCows);
+    }
+
+    public LinkedList<Bull> getBulls() {
+        return bulls;
+    }
+
+    public void addBull(Bull pBull) {
+        bulls.add(pBull);
+    }
+
+	public LinkedList<Livestock> getLivestock() {
+		return livestock;
+	}
+
+	public void addToLivestock(Livestock animal) {
+		livestock.add(animal);
+	}
+
+	public LinkedList<Livestock> getAnimalsToBeSlaughtered() {
+		return animalsToBeSlaughtered;
+	}
+
+	public void addAnimalToBeSlaughtered(Livestock animal) {
+		animalsToBeSlaughtered.add(animal);
 	}
 }

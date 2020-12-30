@@ -1,5 +1,7 @@
 package Factory;
 
+import java.util.LinkedList;
+
 public interface Field {
 
     String getType();
@@ -14,5 +16,6 @@ public interface Field {
     void setIsDiseased(boolean pDiseased);
     void catchDisease();
     boolean isDestroyed();
+    LinkedList<Livestock> getAnimalsToBeSlaughtered();
 
 }

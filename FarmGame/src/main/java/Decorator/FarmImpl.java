@@ -1,6 +1,7 @@
 package Decorator;
 
 import Factory.Field;
+import Factory.Livestock;
 import Mediator.Mediator;
 
 import java.util.LinkedList;
@@ -45,18 +46,33 @@ public class FarmImpl implements Farm {
         double turnOver = 0;
 
         for(Field field : farmFields){
-            if(field.canHarvest()){
+            if(field.canHarvest() && (field.getType().equals("wheat") ||
+                    field.getType().equals("maize"))){
+
                 turnOver += field.getProfit();
+                field.setHarvest(false);
+            }else if(field.canHarvest() && (field.getType().equals("cattle") ||
+                    field.getType().equals("sheep"))){
+
+                System.out.println("Slaughtering....");
+                System.out.println("Number of animals to be slaughtered is: " +
+                        field.getAnimalsToBeSlaughtered().size());
+
+                for(Livestock animal : field.getAnimalsToBeSlaughtered()) {
+                    turnOver += animal.getCurrentCostOfAnimal();
+                }
+                field.getAnimalsToBeSlaughtered().clear();
+
                 field.setHarvest(false);
             }
         }
-        System.out.println("In harvest turn over is now: " + turnOver);
+        //System.out.println("In harvest turn over is now: " + turnOver);
         turnOver = turnOver * bonus;
-        System.out.println("In harvest turn over is now: " + turnOver);
+        //System.out.println("In harvest turn over is now: " + turnOver);
 
         setBank(getBank() + turnOver);
 
-        System.out.println("&& Bank is now: " + getBank());
+        //System.out.println("&& Bank is now: " + getBank());
         mediator.harvest(this);
     }
 

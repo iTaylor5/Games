@@ -47,7 +47,7 @@ public class PlayGame implements Mediator {
                     System.out.println("\n************************************** \n");
                     System.out.println("Field type: " + field.getType());
                     System.out.println("Profit of a harvest is: " + field.getProfit());
-                    System.out.println("Chance of a disease is: " + field.getChanceOfDisease()*10 +
+                    System.out.println("Chance of a disease is: " + field.getChanceOfDisease() * 10 +
                             "%");
                     System.out.println();
                 }
@@ -113,7 +113,7 @@ public class PlayGame implements Mediator {
                         if (gold >= 8 ){
                             gold = gold - 8;
                             field.setIsDiseased(false);
-                            System.out.println("You have cured the disease");
+                            System.out.println("You have cured the field of disease");
                             field.cycleInfo();
                         }else {
                             System.out.println("\n !!! You do not have enough money !!!");

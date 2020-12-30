@@ -1,5 +1,6 @@
 package Factory;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 public class CropField implements Field {
@@ -88,6 +89,11 @@ public class CropField implements Field {
 	@Override
 	public boolean isDestroyed() {
 		return destroyed;
+	}
+
+	@Override
+	public LinkedList<Livestock> getAnimalsToBeSlaughtered() {
+		return null;
 	}
 
 	@Override

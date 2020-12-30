@@ -8,11 +8,11 @@ public class Cow extends Cattle {
     private final int coolingPeriod = 12; // time after dropping calf till it can be impregnated
 
     public Cow(){
-        super("cow", 20);
+        super("cow", 21);
     }
 
     public Cow(int age){
-        super("cow", 20);
+        super("cow", 21);
         this.setAge(age);
     }
 
