@@ -3,55 +3,50 @@ package Factory;
 public abstract class Livestock {
 
     private final String type;
-    private final int priceAtSlaughter;
-    private int age;
+    private int ageInMonths;
     private final int tillFullyFat;
     private boolean fullySized;
-    private final int livestockLifeSpan;
+    private final int maxAge;
+    private boolean impregnated;
+    private boolean inCoolingPeriod;
 
-    public Livestock(String pType, int slaughterPrice, int timeTillFat, int lifeSpan){
+    public Livestock(String pType, int timeTillFat, int lifeSpan) {
         this.type = pType;
-        this.priceAtSlaughter = slaughterPrice;
         tillFullyFat = timeTillFat;
-        livestockLifeSpan = lifeSpan;
+        maxAge = lifeSpan;
     }
 
     public String getType() {
         return type;
     }
-//    public void setType(String pType) {
-//        this.type = pType;
-//    }
-//    public void setPriceAtSlaughter(int price) {
-//        this.priceAtSlaughter = price;
-//    }
-    public int getPriceAtSlaughter() {
-        return priceAtSlaughter;
-    }
 
-    public int getAge() {
-        return age;
-    }
+    public int getAgeInMonths() { return ageInMonths; }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+    public void setAgeInMonths(int ageInMonths) { this.ageInMonths = ageInMonths; }
 
-    public boolean isFullySized() {
-        return fullySized;
-    }
+    public boolean isFullySized() { return fullySized; }
 
-    public void setFullySized(boolean fullySized) {
-        this.fullySized = fullySized;
-    }
+    public void setFullySized(boolean fullySized) { this.fullySized = fullySized; }
 
-    public int getTillFullyFat() {
-        return tillFullyFat;
-    }
+    public int getTillFullyFat() { return tillFullyFat; }
 
-    public int getLivestockLifeSpan() {
-        return livestockLifeSpan;
-    }
+    public int getMaxAge() { return maxAge; }
 
     public abstract double getCurrentCostOfAnimal();
+
+    public boolean isImpregnated() {
+        return impregnated;
+    }
+
+    public void setImpregnated(boolean impregnated) {
+        this.impregnated = impregnated;
+    }
+
+    public boolean isInCoolingPeriod() {
+        return inCoolingPeriod;
+    }
+
+    public void setInCoolingPeriod(boolean inCoolingPeriod) {
+        this.inCoolingPeriod = inCoolingPeriod;
+    }
 }

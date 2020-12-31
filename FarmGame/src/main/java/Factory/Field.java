@@ -18,4 +18,7 @@ public interface Field {
     boolean isDestroyed();
     LinkedList<Livestock> getAnimalsToBeSlaughtered();
 
+    double getAccount();
+    void setAccount(double account);
+
 }

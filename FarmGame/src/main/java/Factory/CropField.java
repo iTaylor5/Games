@@ -14,6 +14,7 @@ public class CropField implements Field {
 	private boolean harvest;
 	private boolean diseased;
 	boolean destroyed = false;
+	private double account;
 
 	public CropField(String type, int cyclesBeforeHarvest){
 		this.type = type;
@@ -94,6 +95,16 @@ public class CropField implements Field {
 	@Override
 	public LinkedList<Livestock> getAnimalsToBeSlaughtered() {
 		return null;
+	}
+
+	@Override
+	public double getAccount() {
+		return account;
+	}
+
+	@Override
+	public void setAccount(double pAccount) {
+		account = pAccount;
 	}
 
 	@Override

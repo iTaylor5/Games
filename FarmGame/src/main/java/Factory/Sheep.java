@@ -1,20 +1,18 @@
 package Factory;
 
-public class Cattle extends Livestock {
+public class Sheep extends Livestock {
 
-    public Cattle(String pType){
-        super(pType, 36, 72);
+    public Sheep(String pType){
+        super(pType, 24, 48);
     }
-
     @Override
     public double getCurrentCostOfAnimal() {
-
         double currentPrice;
 
         if(getAgeInMonths() < 36){
-           currentPrice = (getAgeInMonths()/12) * 7;
+            currentPrice = (getAgeInMonths()/12) * 3;
         } else {
-            currentPrice = 21;
+            currentPrice = 15;
         }
         return currentPrice;
     }

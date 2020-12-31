@@ -47,8 +47,8 @@ public class PlayGame implements Mediator {
                     System.out.println("\n************************************** \n");
                     System.out.println("Field type: " + field.getType());
                     System.out.println("Profit of a harvest is: " + field.getProfit());
-                    System.out.println("Chance of a disease is: " + field.getChanceOfDisease() * 10 +
-                            "%");
+                    System.out.println("Chance of a disease is: " +
+                            field.getChanceOfDisease() * 10 + "%");
                     System.out.println();
                 }
 
@@ -63,6 +63,7 @@ public class PlayGame implements Mediator {
             }
 
             System.out.println("\n************************************** \n");
+            System.out.println("Beginning a cycle...");
             cycle();
             System.out.println("\n************************************** \n");
             // TODO: need to implement
@@ -115,7 +116,7 @@ public class PlayGame implements Mediator {
                             field.setIsDiseased(false);
                             System.out.println("You have cured the field of disease");
                             field.cycleInfo();
-                        }else {
+                        } else {
                             System.out.println("\n !!! You do not have enough money !!!");
                             obj.getFields().remove(index);
                         }
@@ -145,7 +146,7 @@ public class PlayGame implements Mediator {
     public void createFirstFarm(){
         Scanner reader = new Scanner(System.in, "UTF-8");  // Reading from System.in
 
-        System.out.println("We shall begin the game with 200 gold!!!\n");
+        System.out.println("\nWe shall begin the game with 200 gold!!!\n");
 
         System.out.println("Lets create a Farm");
         System.out.println("Please enter a name for the farm...");
@@ -157,7 +158,7 @@ public class PlayGame implements Mediator {
         System.out.println("---------------------------------------- ");
 
         for (int i = 0; i < 2; i++){
-            System.out.println("Let's chose the next field type.");
+            //System.out.println("Let's chose the next field type.");
             createField(originalFarm);
         }
 

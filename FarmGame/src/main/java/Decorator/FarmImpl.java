@@ -44,6 +44,7 @@ public class FarmImpl implements Farm {
     public void harvest(){
 
         double turnOver = 0;
+        double fromFieldsAccount = 0;
 
         for(Field field : farmFields){
             if(field.canHarvest() && (field.getType().equals("wheat") ||
@@ -65,10 +66,15 @@ public class FarmImpl implements Farm {
 
                 field.setHarvest(false);
             }
+            fromFieldsAccount += field.getAccount();
+            field.setAccount(0);
         }
+
         //System.out.println("In harvest turn over is now: " + turnOver);
         turnOver = turnOver * bonus;
         //System.out.println("In harvest turn over is now: " + turnOver);
+
+        turnOver += fromFieldsAccount;
 
         setBank(getBank() + turnOver);
 
