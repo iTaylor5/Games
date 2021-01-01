@@ -51,9 +51,12 @@ public class LivestockField implements Field {
 				}
 			}
 
-			// TODO: implement random could die any time...
+
 			if( animal.getMaxAge() - animal.getAgeInMonths() < 6 ) {
-				System.out.println(" ** This animal is showing signs of old age! **");
+				System.out.print(" ** This animal is showing signs of old age! ");
+				System.out.print("Animals has roughly " + (animal.getMaxAge() - animal.getAgeInMonths())
+				+ " months to live. But it could die any cycle. **");
+				// TODO: implement random could die any time...
 			}
 
 			count++;
@@ -150,14 +153,6 @@ public class LivestockField implements Field {
 
 	public void buyAnimals(){
 
-//		if(getType().equals("sheep")){
-//			System.out.println("(1) A Ewe or (2) Ram");
-//		} else {
-//			System.out.println("(1) A Cow or (2) Bull");
-//		}
-//
-//		int response = reader.nextInt();
-//
 		boolean continueBuying = true;
 		while(continueBuying){
 			System.out.println("\n+++++ Welcome to Harrods market places +++++");
@@ -214,9 +209,7 @@ public class LivestockField implements Field {
 					setAccount(getAccount() - 25);
 				}
 			}
-
 		}
-
 	}
 
 	public void incrementAnimalsAge(Livestock animal){
@@ -258,16 +251,6 @@ public class LivestockField implements Field {
 	}
 
 	public void femLivestock(Livestock animal){
-//		boolean calfBorn = false;
-//		int numOfCalvesBorn = 0;
-//
-//		boolean eweBorn = false;
-//		int numOfEweBorn = 0;
-//		int count = 0;
-//		int numOfDeaths = 0;
-//		boolean death = false;
-
-
 		if(animal.isInCoolingPeriod()){
 			FemaleLivestock fem = (FemaleLivestock) animal;
 			fem.setTimeInCoolingPeriod(fem.getTimeInCoolingPeriod() + 1);

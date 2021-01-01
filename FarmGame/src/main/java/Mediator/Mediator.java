@@ -9,15 +9,9 @@ public interface Mediator {
 
     void harvest(Farm farm);
 
-    //void addField(Field field);
+    double getGold();
 
-    //List<Field> getFields();
-
-    //String getName();
-
-//    void setName(String name);
-//
-//    int getNumberOfFields();
+    void setGold(double gold);
 
     void addFarm(Farm farm);
 

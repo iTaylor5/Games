@@ -14,6 +14,7 @@ public class PlayGame implements Mediator {
     private double gold = 200;
     private List<Farm> farms;
     private Scanner reader;
+    private boolean autoRepair = true;
 
     public PlayGame(){
         farms = new LinkedList<>();
@@ -22,17 +23,23 @@ public class PlayGame implements Mediator {
     public void runGame(Farm farm) {
 
         reader = new Scanner(System.in, "UTF-8");  // Reading from System.in
+
         System.out.println("\n\tRunning the Game...");
+
+        System.out.println("PLEASE NOTE: The system will auto repair until you have less " +
+                "than 12 gold remaining");
+        // TODO: Implement this !!!!
 
         int cycleNUmber = 1;
 
         boolean gameContinue = true;
 
         while(gameContinue){
-            System.out.println("\n---> Beginning cycle number: " + cycleNUmber + " <---\n");
+            System.out.print("\n---> Beginning cycle number: " + cycleNUmber);
+            System.out.println("\t :: Total gold: " + getGold() + " <---\n");
 
             for ( Farm obj : farms){
-                System.out.println("FARM NAME: " + obj.getName() + ", farm level is Level " +
+                System.out.println("FARM NAME: " + obj.getName() + "> Farm level is level " +
                         obj.getFarmLevel());
 
                 if(farm.getFields().size() == 1 ){
@@ -103,26 +110,38 @@ public class PlayGame implements Mediator {
     }
 
     public void cycle(){
+
+
+
         for ( Farm obj : farms){
             int index = 0;
             for(Field field : obj.getFields()){
+
                 if (field.isDiseased()){
-                    System.out.println(field.getType() + " is diseased!");
-                    System.out.println("(yes/no) would you like to repair it?");
-                    String response = reader.nextLine();
-                    if(response.equalsIgnoreCase("yes")) {
-                        if (gold >= 8 ){
-                            gold = gold - 8;
-                            field.setIsDiseased(false);
-                            System.out.println("You have cured the field of disease");
-                            field.cycleInfo();
-                        } else {
-                            System.out.println("\n !!! You do not have enough money !!!");
+
+                    if(getGold() >= 12){
+                        gold = gold - 8;
+                        field.setIsDiseased(false);
+                        System.out.println("You have cured the field of disease");
+                        field.cycleInfo();
+                    } else {
+                        System.out.println(field.getType() + " is diseased!");
+                        System.out.println("(yes/no) would you like to repair it?");
+                        String response = reader.nextLine();
+                        if(response.equalsIgnoreCase("yes")) {
+                            if (gold >= 8 ){
+                                gold = gold - 8;
+                                field.setIsDiseased(false);
+                                System.out.println("You have cured the field of disease");
+                                field.cycleInfo();
+                            } else {
+                                System.out.println("\n !!! You do not have enough money !!!");
+                                obj.getFields().remove(index);
+                            }
+                        } else{
+                            System.out.println("This crop will be dead tomorrow.");
                             obj.getFields().remove(index);
                         }
-                    } else{
-                        System.out.println("This crop will be dead tomorrow.");
-                        obj.getFields().remove(index);
                     }
                 } else {
                     field.cycleInfo();
@@ -130,7 +149,6 @@ public class PlayGame implements Mediator {
                 index++;
             }
             obj.harvest();
-            //gold += obj.harvest();
         }
         System.out.println("\n\t$$$ Your gold is: " + gold + " $$$\n");
     }
@@ -216,13 +234,16 @@ public class PlayGame implements Mediator {
 
     }
 
+    @Override
     public double getGold() {
         return gold;
     }
 
+    @Override
     public void setGold(double gold) {
         this.gold = gold;
     }
+
 
     @Override
     public List<Farm> getFarms() {

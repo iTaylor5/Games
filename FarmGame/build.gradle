@@ -4,6 +4,19 @@ apply plugin: 'application'
 
 mainClassName = 'Main'
 
+// In this section you declare where to find the dependencies of your project
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'junit:junit:4.12'
+    implementation 'org.testng:testng:6.14.3'
+    implementation 'org.testng:testng:6.14.3'
+    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    compile "junit:junit:4.12"
+}
+
 run{
     standardInput = System.in
 }

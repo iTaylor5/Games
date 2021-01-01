@@ -15,6 +15,7 @@ public class CropField implements Field {
 	private boolean diseased;
 	boolean destroyed = false;
 	private double account;
+	private Random random;
 
 	public CropField(String type, int cyclesBeforeHarvest){
 		this.type = type;
@@ -69,7 +70,7 @@ public class CropField implements Field {
 
 	@Override
 	public void catchDisease() {
-		Random random = new Random();
+		random = new Random();
 
 		if(isDiseased()){
 			System.out.println("This field has been diseased for a full cycle." +
@@ -80,8 +81,8 @@ public class CropField implements Field {
 			if (numb <= getChanceOfDisease()) {
 				setIsDiseased(true);
 				System.out.println("\n-------------------------------------- \n");
-				System.out.println("\nField:\t" + getType());
-				System.out.println("Crop has caught disease during the night.\n");
+				System.out.print("\nField:\t" + getType());
+				System.out.println(" --> Crop has caught disease during the night.\n");
 				System.out.println("\n-------------------------------------- \n");
 			}
 		}
@@ -109,9 +110,9 @@ public class CropField implements Field {
 
 	@Override
 	public void cycleInfo() {
-		System.out.println("Field type: " + getType());
-		System.out.println("Days since planted: " + cyclesSincePlanted);
-		System.out.println("Days till harvest: " + cyclesTillHarvest);
+		System.out.print("Field type: " + getType());
+		System.out.print(", days since planted: " + cyclesSincePlanted);
+		System.out.println(", days till harvest: " + cyclesTillHarvest);
 		System.out.println("Does this field have disease: " + diseased);
 		System.out.println("Is this field destroyed: " + isDestroyed());
 		dayCycle();
