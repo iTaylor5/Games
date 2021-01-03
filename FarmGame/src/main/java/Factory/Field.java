@@ -17,8 +17,16 @@ public interface Field {
     void catchDisease();
     boolean isDestroyed();
     LinkedList<Livestock> getAnimalsToBeSlaughtered();
-
+    void addAnimalToBeSlaughtered(Livestock animal);
     double getAccount();
     void setAccount(double account);
+    //void dayCycle();
+    void nightCycle();
+    void printInfo();
+    LinkedList<Livestock> getLivestock();
 
+    int getCyclesTillHarvest();
+    void setCyclesTillHarvest(int cyclesTillHarvest);
+    int getAmountOfCyclesBeforeHarvest();
+    void setCycleSincePlanted(int daySincePlanted);
 }

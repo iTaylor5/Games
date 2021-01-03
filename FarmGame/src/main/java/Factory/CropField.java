@@ -48,6 +48,11 @@ public class CropField implements Field {
 		this.chanceOfDisease = chanceOfDisease;
 	}
 
+//	@Override
+//	public void cycleInfo() {
+//
+//	}
+
 	@Override
 	public boolean canHarvest() {
 		return harvest;
@@ -99,6 +104,11 @@ public class CropField implements Field {
 	}
 
 	@Override
+	public void addAnimalToBeSlaughtered(Livestock animal) {
+		//TODO: Get rid of...
+	}
+
+	@Override
 	public double getAccount() {
 		return account;
 	}
@@ -115,25 +125,36 @@ public class CropField implements Field {
 		System.out.println(", days till harvest: " + cyclesTillHarvest);
 		System.out.println("Does this field have disease: " + diseased);
 		System.out.println("Is this field destroyed: " + isDestroyed());
-		dayCycle();
-		nightCycle();
+		//dayCycle();
+		//nightCycle();
 	}
 
-	public void dayCycle(){
-		System.out.println("\t ~Sunrise~");
-		if (getCyclesTillHarvest() == 0 && !destroyed) {
-			System.out.println("Time to harvest!!!");
-			harvest = true;
-			setCyclesTillHarvest(getAmountOfCyclesBeforeHarvest());
-			setCycleSincePlanted(0);
-		}
-	}
+//	public void dayCycle(){
+//		System.out.println("\t ~Sunrise~");
+//		if (getCyclesTillHarvest() == 0 && !destroyed) {
+//			System.out.println("Time to harvest!!!");
+//			harvest = true;
+//			setCyclesTillHarvest(getAmountOfCyclesBeforeHarvest());
+//			setCycleSincePlanted(0);
+//		}
+//	}
 
 	public void nightCycle(){
 		setCyclesTillHarvest(getCyclesTillHarvest() - 1);
 		setCycleSincePlanted(getCycleSincePlanted() + 1 );
 		System.out.println("\t ~sunset~");
 		catchDisease();
+	}
+
+	@Override
+	public void printInfo() {
+		//TODO: Get rid of...
+	}
+
+	@Override
+	public LinkedList<Livestock> getLivestock() {
+		//TODO: sort out....
+		return null;
 	}
 
 	public int getCycleSincePlanted() {

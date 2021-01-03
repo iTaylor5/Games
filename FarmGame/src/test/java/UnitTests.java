@@ -19,8 +19,6 @@ public class UnitTests {
 
         assertTrue(sheepField.getLivestock().get(1).isImpregnated());
 
-        //sheepField.cycleInfo();
-
         for(int i = 0; i < 6; i++){
             assertEquals(36 + i, sheepField.getLivestock().get(1).getAgeInMonths());
             sheepField.nightCycle();
@@ -38,6 +36,12 @@ public class UnitTests {
     public void testSheepFemale(){
         Ewe ewe = new Ewe(36);
         Cow Cow = new Cow(36);
+
+    }
+
+    @Test
+    public void testIncrementingNumOfFields(){
+
 
     }
 

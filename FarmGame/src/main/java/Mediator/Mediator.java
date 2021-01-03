@@ -17,4 +17,7 @@ public interface Mediator {
 
     List<Farm> getFarms();
 
+    void cycle();
+
+    public void buyAnimals();
 }

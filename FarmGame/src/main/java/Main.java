@@ -2,7 +2,7 @@ public class Main {
 	public static void main(String[] args){
 
 		PlayGame newGame = new PlayGame();
-		newGame.createFirstFarm();
+		newGame.createFarm();
 
 	}
 }

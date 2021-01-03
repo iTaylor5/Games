@@ -5,7 +5,7 @@ import Factory.Field;
 import java.util.List;
 
 public interface Farm {
-    //double harvest();
+
     void harvest();
 
     void addField(Field field);
@@ -31,6 +31,14 @@ public interface Farm {
     double getBank();
 
     void setBank(double amount);
+
+    void cycle();
+
+    void incrementMaxNumOfFields();
+
+    int getMaxNumOfFields();
+
+    void setMaxNumOfFields(int maxLevelOfFields);
 
 }
 //public abstract class Farm {

@@ -4,17 +4,17 @@ import Factory.Field;
 
 import java.util.List;
 
-public class FarmLevelTwo extends FarmDecorator{
+public class FarmLevelThree extends FarmDecorator {
 
-    public FarmLevelTwo(Farm homeFarm){
+    public FarmLevelThree(Farm homeFarm) {
         super(homeFarm);
         incrementLevel();
-        setBonus(1.1);
+        setBonus(1.25);
         incrementMaxNumOfFields();
     }
 
     @Override
-    public void harvest(){
+    public void harvest() {
         this.homeFarm.harvest();
     }
 
@@ -29,7 +29,7 @@ public class FarmLevelTwo extends FarmDecorator{
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return this.homeFarm.getName();
     }
 
@@ -90,7 +90,7 @@ public class FarmLevelTwo extends FarmDecorator{
 
     @Override
     public int getMaxNumOfFields() {
-        return this.homeFarm.getMaxNumOfFields();
+       return this.homeFarm.getMaxNumOfFields();
     }
 
     @Override

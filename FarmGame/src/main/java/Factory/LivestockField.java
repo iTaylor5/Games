@@ -14,42 +14,43 @@ public class LivestockField implements Field {
 	private Scanner reader;
 	private double account;
 
-	private LinkedList<Cow> cows;
-	private LinkedList<Bull> bulls;
 	private LinkedList<Livestock> livestock;
 	private LinkedList<Livestock> animalsToBeSlaughtered;
 
 	public LivestockField(String type, int numOfAnimals){
 		this.type = type;
 		this.maxNumberOfLivestock = numOfAnimals;
-		cows = new LinkedList<>();
-		bulls = new LinkedList<>();
 		livestock = new LinkedList<>();
 		animalsToBeSlaughtered = new LinkedList<>();
 		reader = new Scanner(System.in, "UTF-8");
 	}
 
-	public void printLivestockInfo(){
+	public void printInfo(){
 
 		int count = 0;
 		System.out.println("\n---------------------------------------- ");
 		System.out.println("This fields livestock information:\n");
 		for(Livestock animal : livestock){
 			//boolean nearingOldAge = false;
-			System.out.print("Number: " + count);
-			System.out.print(", type: " + animal.getType());
+			System.out.print(count);
+			System.out.print(", " + animal.getType());
 			System.out.print(", price at slaughter: " + animal.getCurrentCostOfAnimal());
-			System.out.print(", fully sized: " + animal.isFullySized());
+			System.out.print(" in gold, is the animal fully sized: " + animal.isFullySized());
 			System.out.print(", age in months: " + animal.getAgeInMonths());
-			System.out.print(", pregnant: " + animal.isImpregnated());
-			System.out.println(", in cooling period: " + animal.isInCoolingPeriod());
 
 			if(animal.isImpregnated()){
 				if(animal.getType().equals("cow") || animal.getType().equals("ewe")){
 					FemaleLivestock femLiv = (FemaleLivestock) animal;
-					System.out.println("Time pregnant, : " + femLiv.getTimeInGestation());
+					if(animal.isImpregnated()){
+						System.out.print(". It is pregnant. ");
+						System.out.print(", " + femLiv.getTimeInGestation() + " cycle into pregnancy. ");
+					} else if (animal.isInCoolingPeriod()){
+						System.out.print(". It is in a cooling period while nursing its young.");
+					}
+
 				}
 			}
+			System.out.println("");
 
 
 			if( animal.getMaxAge() - animal.getAgeInMonths() < 6 ) {
@@ -97,29 +98,14 @@ public class LivestockField implements Field {
 
 	@Override
 	public void cycleInfo() {
-		printLivestockInfo();
+		printInfo();
 
 		System.out.println("Does this field have disease: " + diseased);
 		System.out.println("Is this field destroyed: " + isDestroyed());
 
-		dayCycle();
-		nightCycle();
+		//dayCycle();
+//		nightCycle();
 
-	}
-
-	public void dayCycle(){
-		System.out.println("\t ~Sunrise~");
-		System.out.println("(1) Would you like to buy more " + getType() + "?");
-		System.out.println("(2) Would you like to slaughter " + getType() + "?");
-		System.out.println("(3) Continue");
-		int response = reader.nextInt();
-		if(response == 1){
-			buyAnimals();
-		} else if(response == 2){
-			slaughterAnimals();
-		} else {
-			System.out.println("Good night");
-		}
 	}
 
 	public void nightCycle(){
@@ -147,70 +133,70 @@ public class LivestockField implements Field {
 			}
 		}
 
-		System.out.println("\t ~sunset~");
+		//System.out.println("\t ~sunset~");
 		catchDisease();
 	}
 
-	public void buyAnimals(){
-
-		boolean continueBuying = true;
-		while(continueBuying){
-			System.out.println("\n+++++ Welcome to Harrods market places +++++");
-			System.out.println("(-1) to exit");
-			if(getType().equals("sheep")){
-				System.out.println("Ewe prices are: ");
-				System.out.println("(1) 12-24 months is 21 gold");
-				System.out.println("(2) 24-36 months is 25 gold");
-				System.out.println("Ram prices are: ");
-				System.out.println("(3) 12-24 months is 21 gold");
-				System.out.println("(4) 24-36 months is 30 gold");
-			} else {
-				System.out.println("Cow prices are: ");
-				System.out.println("(1) 12-24 months is 21 gold");
-				System.out.println("(2) 24-36 months is 25 gold");
-				System.out.println("Bull prices are: ");
-				System.out.println("(3) 12-24 months is 21 gold");
-				System.out.println("(4) 24-36 months is 30 gold");
-			}
-
-			int response = reader.nextInt();
-
-			if(response == -1){
-				continueBuying = false;
-			} else if(getType().equals("sheep")){
-				if(response == 1){
-					getLivestock().add(new Ewe(15));
-					setAccount(getAccount() - 21);
-				} else if(response == 2){
-					getLivestock().add(new Ewe(25));
-					setAccount(getAccount() - 25);
-				} else if(response == 3){
-					getLivestock().add(new Ram(15));
-					setAccount(getAccount() - 21);
-
-				} else {
-					getLivestock().add(new Ram(25));
-					setAccount(getAccount() - 25);
-				}
-
-			}else {
-				if(response == 1 ){
-					getLivestock().add(new Cow(15));
-					setAccount(getAccount() - 21);
-				} else if(response == 2){
-					getLivestock().add(new Cow(25));
-					setAccount(getAccount() - 25);
-				} else if(response == 3){
-					getLivestock().add(new Bull(15));
-					setAccount(getAccount() - 21);
-
-				} else {
-					getLivestock().add(new Bull(25));
-					setAccount(getAccount() - 25);
-				}
-			}
-		}
-	}
+//	public void buyAnimals(){
+//
+//		boolean continueBuying = true;
+//		while(continueBuying){
+//			System.out.println("\n+++++ Welcome to Harrods market places +++++");
+//			System.out.println("(-1) to exit");
+//			if(getType().equals("sheep")){
+//				System.out.println("Ewe prices are: ");
+//				System.out.println("(1) 12-24 months is 21 gold");
+//				System.out.println("(2) 24-36 months is 25 gold");
+//				System.out.println("Ram prices are: ");
+//				System.out.println("(3) 12-24 months is 21 gold");
+//				System.out.println("(4) 24-36 months is 30 gold");
+//			} else {
+//				System.out.println("Cow prices are: ");
+//				System.out.println("(1) 12-24 months is 21 gold");
+//				System.out.println("(2) 24-36 months is 25 gold");
+//				System.out.println("Bull prices are: ");
+//				System.out.println("(3) 12-24 months is 21 gold");
+//				System.out.println("(4) 24-36 months is 30 gold");
+//			}
+//
+//			int response = reader.nextInt();
+//
+//			if(response == -1){
+//				continueBuying = false;
+//			} else if(getType().equals("sheep")){
+//				if(response == 1){
+//					getLivestock().add(new Ewe(15));
+//					setAccount(getAccount() - 21);
+//				} else if(response == 2){
+//					getLivestock().add(new Ewe(25));
+//					setAccount(getAccount() - 25);
+//				} else if(response == 3){
+//					getLivestock().add(new Ram(15));
+//					setAccount(getAccount() - 21);
+//
+//				} else {
+//					getLivestock().add(new Ram(25));
+//					setAccount(getAccount() - 25);
+//				}
+//
+//			}else {
+//				if(response == 1 ){
+//					getLivestock().add(new Cow(15));
+//					setAccount(getAccount() - 21);
+//				} else if(response == 2){
+//					getLivestock().add(new Cow(25));
+//					setAccount(getAccount() - 25);
+//				} else if(response == 3){
+//					getLivestock().add(new Bull(15));
+//					setAccount(getAccount() - 21);
+//
+//				} else {
+//					getLivestock().add(new Bull(25));
+//					setAccount(getAccount() - 25);
+//				}
+//			}
+//		}
+//	}
 
 	public void incrementAnimalsAge(Livestock animal){
 		animal.setAgeInMonths(animal.getAgeInMonths() + 1);
@@ -264,29 +250,29 @@ public class LivestockField implements Field {
 
 	}
 
-	public void slaughterAnimals(){
-
-		while(true){
-			System.out.println("\nEnter the number corresponding to the livestock you would " +
-					"like to sell or -1 to exit.");
-			printLivestockInfo();
-			int num = reader.nextInt();
-			if(num == -1){
-				break;
-			}else if(num >= 0 && num <= getLivestock().size()-1){
-				Livestock animal = getLivestock().get(num);
-				getLivestock().remove(num);
-
-				System.out.println("We will slaughter this " + animal.getType() +
-						" and the price is " + animal.getCurrentCostOfAnimal());
-
-				addAnimalToBeSlaughtered(animal);
-				setHarvest(true);
-			}else {
-				System.out.println("Invalid input.");
-			}
-		}
-	}
+//	public void slaughterAnimals(){
+//
+//		while(true){
+//			System.out.println("\nEnter the number corresponding to the livestock you would " +
+//					"like to sell or -1 to exit.");
+//			printInfo();
+//			int num = reader.nextInt();
+//			if(num == -1){
+//				break;
+//			}else if(num >= 0 && num <= getLivestock().size()-1){
+//				Livestock animal = getLivestock().get(num);
+//				getLivestock().remove(num);
+//
+//				System.out.println("We will slaughter this " + animal.getType() +
+//						" and the price is " + animal.getCurrentCostOfAnimal());
+//
+//				addAnimalToBeSlaughtered(animal);
+//				setHarvest(true);
+//			}else {
+//				System.out.println("Invalid input.");
+//			}
+//		}
+//	}
 
 	public void impregnate(Livestock animal){
 
@@ -362,24 +348,46 @@ public class LivestockField implements Field {
 		return false;
 	}
 
-	public LinkedList<Cow> getCows() {
-        return cows;
-    }
-
-    public void addCow(Cow pCows) {
-        cows.add(pCows);
-    }
-
-    public LinkedList<Bull> getBulls() {
-        return bulls;
-    }
-
-    public void addBull(Bull pBull) {
-        bulls.add(pBull);
-    }
+//	public LinkedList<Cow> getCows() {
+//        return cows;
+//    }
+//
+//    public void addCow(Cow pCows) {
+//        cows.add(pCows);
+//    }
+//
+//    public LinkedList<Bull> getBulls() {
+//        return bulls;
+//    }
+//
+//    public void addBull(Bull pBull) {
+//        bulls.add(pBull);
+//    }
 
 	public LinkedList<Livestock> getLivestock() {
 		return livestock;
+	}
+
+	@Override
+	public int getCyclesTillHarvest() {
+		return 0;
+		//TODO: Need to implement
+	}
+
+	@Override
+	public void setCyclesTillHarvest(int cyclesTillHarvest) {
+		//TODO: Need to implement
+	}
+
+	@Override
+	public int getAmountOfCyclesBeforeHarvest() {
+		return 0;
+		//TODO: Need to implement
+	}
+
+	@Override
+	public void setCycleSincePlanted(int daySincePlanted) {
+		//TODO: Need to implement
 	}
 
 	public void addToLivestock(Livestock animal) {
