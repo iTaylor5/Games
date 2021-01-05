@@ -1,5 +1,7 @@
 package Factory;
 
+import java.text.DecimalFormat;
+
 public class Cattle extends Livestock {
 
     public Cattle(String pType){
@@ -17,6 +19,7 @@ public class Cattle extends Livestock {
         } else {
             currentPrice = 21;
         }
+
         return currentPrice;
     }
 }

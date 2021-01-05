@@ -23,7 +23,16 @@ public class PlayGame implements Mediator {
         farms = new LinkedList<>();
     }
 
-    public void runGame(Farm farm) {
+    // Farm farm
+    public void runGame() {
+
+        System.out.println("DEBUGGING:");
+        System.out.println("farms.size() = " + farms.size());
+
+        createFarm();
+
+        System.out.println("DEBUGGING:");
+        System.out.println("farms.size() = " + farms.size());
 
         reader = new Scanner(System.in, StandardCharsets.UTF_8);  // Reading from System.in
 
@@ -45,7 +54,7 @@ public class PlayGame implements Mediator {
                 /* Print out farm information */
                 System.out.println("FARM NAME: " + f.getName() +
                         " -> Level: " + f.getFarmLevel());
-                if (farm.getFields().size() == 1) {
+                if (f.getFields().size() == 1) {
                     System.out.println("This farm has " + f.getNumberOfFields() +
                             " field");
                 } else {
@@ -72,8 +81,9 @@ public class PlayGame implements Mediator {
                 for (Field field : f.getFields()) {
                     System.out.println("\n************************************** \n");
                     System.out.println("Field type: " + field.getType());
-                    System.out.println("Profit of a harvest is: " + field.getProfit() *
+                    System.out.printf("Profit of a harvest is: %.2f\n", field.getProfit() *
                             f.getBonus());
+
                     System.out.println("Chance of a disease is: " +
                             field.getChanceOfDisease() * 10 + "%");
                     System.out.println();
@@ -113,7 +123,6 @@ public class PlayGame implements Mediator {
             System.out.println("Beginning a cycle...");
             cycle();
             System.out.println("\n************************************** \n");
-            // TODO: need to implement
             /* Everything 10th go give option to buy farm. */
             if ((cycleNUmber % 10) == 0 && (gold >= 200)){
                 System.out.println("(yes/no) Would you like to buy a farm and " +
@@ -159,10 +168,6 @@ public class PlayGame implements Mediator {
         System.out.println("\n\t$$$ Your gold is: " + gold + " $$$\n");
     }
 
-//    @Override
-//    public void buyAnimals() {
-//        // TODO: fix
-//    }
 
     public Farm upGradeFarm(Farm farmToUpgrade){
         Farm newFarm = null;
@@ -202,7 +207,7 @@ public class PlayGame implements Mediator {
         System.out.println("Farm has been create and your two fields chosen, " +
                 "lets begin the game.");
 
-        runGame(originalFarm);
+        //addFarm(originalFarm);
     }
 
     public void createField(Farm farm){
@@ -267,10 +272,6 @@ public class PlayGame implements Mediator {
     @Override
     public List<Farm> getFarms() {
         return farms;
-    }
-
-    public void setFarms(List<Farm> farms) {
-        this.farms = farms;
     }
 
     @Override

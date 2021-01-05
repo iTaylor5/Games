@@ -33,7 +33,7 @@ public class LivestockField implements Field {
 		for(Livestock animal : livestock){
 			System.out.print(count);
 			System.out.print(", " + animal.getType());
-			System.out.print(", price at slaughter: " + animal.getCurrentCostOfAnimal());
+			System.out.printf(", price at slaughter: %.2f", animal.getCurrentCostOfAnimal());
 			System.out.print(" in gold, is the animal fully sized: " + animal.isFullySized());
 			System.out.print(", age in months: " + animal.getAgeInMonths());
 
@@ -41,7 +41,7 @@ public class LivestockField implements Field {
 				if(animal.getType().equals("cow") || animal.getType().equals("ewe")){
 					FemaleLivestock femLiv = (FemaleLivestock) animal;
 					if(animal.isImpregnated()){
-						System.out.print(". It is pregnant. ");
+						System.out.print(". It is pregnant");
 						System.out.print(", " + femLiv.getTimeInGestation() + " cycle into pregnancy. ");
 					} else if (animal.isInCoolingPeriod()){
 						System.out.print(". It is in a cooling period while nursing its young.");
@@ -53,7 +53,7 @@ public class LivestockField implements Field {
 
 			if( animal.getMaxAge() - animal.getAgeInMonths() < 6 ) {
 				System.out.print(" ** This animal is showing signs of old age! ");
-				System.out.print("Animals has roughly " + (animal.getMaxAge() - animal.getAgeInMonths())
+				System.out.println("Animals has roughly " + (animal.getMaxAge() - animal.getAgeInMonths())
 				+ " months to live. But it could die any cycle. **");
 				// TODO: implement random could die any time...
 			}
@@ -114,7 +114,7 @@ public class LivestockField implements Field {
 			incrementAnimalsAge(animal);
 
 			if(animal.getAgeInMonths() == animal.getMaxAge()){
-				System.out.println("REMOVING!!!!");
+				System.out.println("\n*** This animal has died ***\n");
 				System.out.println("This animal has died." + animal.getType());
 				iter.remove();
 				continue;
@@ -172,7 +172,6 @@ public class LivestockField implements Field {
 			fem.setTimeInCoolingPeriod(fem.getTimeInCoolingPeriod() + 1);
 
 			if(fem.getCoolingPeriodLength() == fem.getTimeInCoolingPeriod()){
-				System.out.println("setting to false");
 				fem.setInCoolingPeriod(false);
 			}
 		} else if((animal.getAgeInMonths() > 36) && !animal.isImpregnated()){
@@ -181,31 +180,46 @@ public class LivestockField implements Field {
 
 	}
 
-	public void impregnate(Livestock animal){
+	public void impregnate(Livestock animal) {
 
-		// TODO: Ensure there is a RAM or BULL in herd
+		boolean ramPresent = false;
+
+		for( Livestock a : getLivestock()){
+			if (a.getType().equals("ram") && a.getAgeInMonths() > 23 ||
+					a.getType().equals("bull") && a.getAgeInMonths() > 23){
+				ramPresent = true;
+				break;
+			}
+		}
 
 		Random random = new Random();
 
-		if(animal.getType().equals("cow")){
-			Cow cow = (Cow) animal;
-			int numb = random.nextInt(10 - 1 + 1) + 1;
-			if (numb <= cow.getChanceToBeImpregnated()) {
-				System.out.println("Impregnated");
-				cow.setImpregnated(true);
-				cow.setTimeInGestation(0);
-			}
-		}else if(animal.getType().equals("ewe")){
-			Ewe ewe = (Ewe) animal;
+		if(ramPresent){
+			if(animal.getType().equals("cow")){
+				Cow cow = (Cow) animal;
+				int numb = random.nextInt(10 - 1 + 1) + 1;
+				if (numb <= cow.getChanceToBeImpregnated()) {
+					cow.setImpregnated(true);
+					cow.setTimeInGestation(0);
+				}
+			}else if(animal.getType().equals("ewe")){
+				Ewe ewe = (Ewe) animal;
 
-			int numb = random.nextInt(10 - 1 + 1) + 1;
-			if (numb <= ewe.getChanceToBeImpregnated()) {
-				System.out.println("Impregnated");
-				ewe.setImpregnated(true);
-				ewe.setTimeInGestation(0);
+				int numb = random.nextInt(10 - 1 + 1) + 1;
+				if (numb <= ewe.getChanceToBeImpregnated()) {
+					ewe.setImpregnated(true);
+					ewe.setTimeInGestation(0);
+				}
+			}else{
+				System.out.println("This animal type cannot be impregnated.");
 			}
-		}else{
-			System.out.println("This animal type cannot be impregnated.");
+		} else {
+			if(animal.getType().equals("ewe"))
+				System.out.println("\n Your flock is unable to expand without a " +
+						"ram old enough in it.");
+			else
+				System.out.println("\n Your herd is unable to expand without a " +
+						"bull old enough in it.");
 		}
 	}
 
