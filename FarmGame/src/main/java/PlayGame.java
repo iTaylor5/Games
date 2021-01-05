@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * This is the mediator that runs the farms for the game.
+ */
 public class PlayGame implements Mediator {
 
     private double gold = 200;
@@ -77,7 +80,7 @@ public class PlayGame implements Mediator {
                 }
             }
 
-            if(getGold() > 80){
+            if(getGold() > 200){
                 System.out.println("## You have enough money to upgrade one of your farms. ##\n");
                 int count = 0;
                 for(Farm f : farms){
@@ -98,7 +101,7 @@ public class PlayGame implements Mediator {
                     Farm newFarm = upGradeFarm(farms.get(number));
                     farms.remove(number);
                     farms.add(number, newFarm);
-                    setGold(getGold() - 80);
+                    setGold(getGold() - 200);
                     System.out.println("~~~ Congratulations your upgrade was successful ~~~");
                 }else {
                     System.out.println("Invalid input.");
@@ -124,13 +127,6 @@ public class PlayGame implements Mediator {
             gameContinue = checkIfGameOver();
             cycleNUmber++;
 
-//            if (getGold() > 200) {
-//                System.out.println("(yes/no) Would you like to invest in a new farm?");
-//                String repsonse = reader.nextLine();
-//
-//                if(repsonse.equalsIgnoreCase("yes"))
-//
-//            }
         }
         System.out.println("! ! ! ! ! ! ! ! ! ! THE IS GAME OVER ! ! ! ! ! ! ! ! ! !");
     }
@@ -163,15 +159,10 @@ public class PlayGame implements Mediator {
         System.out.println("\n\t$$$ Your gold is: " + gold + " $$$\n");
     }
 
-    @Override
-    public void buyAnimals() {
-        // TODO: fix
-    }
-
-
-    public void buyFarm(){
-
-    }
+//    @Override
+//    public void buyAnimals() {
+//        // TODO: fix
+//    }
 
     public Farm upGradeFarm(Farm farmToUpgrade){
         Farm newFarm = null;
@@ -210,6 +201,7 @@ public class PlayGame implements Mediator {
         System.out.println("---------------------------------------- ");
         System.out.println("Farm has been create and your two fields chosen, " +
                 "lets begin the game.");
+
         runGame(originalFarm);
     }
 

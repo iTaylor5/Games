@@ -12,7 +12,8 @@ public class Cattle extends Livestock {
         double currentPrice;
 
         if(getAgeInMonths() < 36){
-           currentPrice = (getAgeInMonths()/12) * 7;
+            double age = getAgeInMonths();
+           currentPrice = age/12 * 7;
         } else {
             currentPrice = 21;
         }

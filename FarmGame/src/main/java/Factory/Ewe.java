@@ -3,8 +3,7 @@ package Factory;
 public class Ewe extends FemaleLivestock {
 
     public Ewe(int age){
-        super("ewe", 36, 72, 24, 6);
-        this.setAgeInMonths(age);
+        super("ewe", 36, 48, 24, 6);
         this.setAgeInMonths(age);
     }
 
@@ -13,7 +12,8 @@ public class Ewe extends FemaleLivestock {
         double currentPrice;
 
         if(getAgeInMonths() < 36){
-            currentPrice = (getAgeInMonths()/12) * 3;
+            double age = getAgeInMonths();
+            currentPrice = (age/12) * 3;
         } else {
             currentPrice = 15;
         }

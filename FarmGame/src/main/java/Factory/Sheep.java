@@ -10,7 +10,8 @@ public class Sheep extends Livestock {
         double currentPrice;
 
         if(getAgeInMonths() < 36){
-            currentPrice = (getAgeInMonths()/12) * 3;
+            double age = getAgeInMonths();
+            currentPrice = age * 3;
         } else {
             currentPrice = 15;
         }

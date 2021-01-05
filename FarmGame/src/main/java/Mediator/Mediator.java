@@ -19,5 +19,5 @@ public interface Mediator {
 
     void cycle();
 
-    public void buyAnimals();
+    //public void buyAnimals();
 }

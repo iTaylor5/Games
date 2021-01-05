@@ -125,19 +125,7 @@ public class CropField implements Field {
 		System.out.println(", days till harvest: " + cyclesTillHarvest);
 		System.out.println("Does this field have disease: " + diseased);
 		System.out.println("Is this field destroyed: " + isDestroyed());
-		//dayCycle();
-		//nightCycle();
 	}
-
-//	public void dayCycle(){
-//		System.out.println("\t ~Sunrise~");
-//		if (getCyclesTillHarvest() == 0 && !destroyed) {
-//			System.out.println("Time to harvest!!!");
-//			harvest = true;
-//			setCyclesTillHarvest(getAmountOfCyclesBeforeHarvest());
-//			setCycleSincePlanted(0);
-//		}
-//	}
 
 	public void nightCycle(){
 		setCyclesTillHarvest(getCyclesTillHarvest() - 1);

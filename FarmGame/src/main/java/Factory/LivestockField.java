@@ -31,7 +31,6 @@ public class LivestockField implements Field {
 		System.out.println("\n---------------------------------------- ");
 		System.out.println("This fields livestock information:\n");
 		for(Livestock animal : livestock){
-			//boolean nearingOldAge = false;
 			System.out.print(count);
 			System.out.print(", " + animal.getType());
 			System.out.print(", price at slaughter: " + animal.getCurrentCostOfAnimal());
@@ -51,7 +50,6 @@ public class LivestockField implements Field {
 				}
 			}
 			System.out.println("");
-
 
 			if( animal.getMaxAge() - animal.getAgeInMonths() < 6 ) {
 				System.out.print(" ** This animal is showing signs of old age! ");
@@ -103,9 +101,6 @@ public class LivestockField implements Field {
 		System.out.println("Does this field have disease: " + diseased);
 		System.out.println("Is this field destroyed: " + isDestroyed());
 
-		//dayCycle();
-//		nightCycle();
-
 	}
 
 	public void nightCycle(){
@@ -119,6 +114,7 @@ public class LivestockField implements Field {
 			incrementAnimalsAge(animal);
 
 			if(animal.getAgeInMonths() == animal.getMaxAge()){
+				System.out.println("REMOVING!!!!");
 				System.out.println("This animal has died." + animal.getType());
 				iter.remove();
 				continue;
@@ -132,71 +128,9 @@ public class LivestockField implements Field {
 				femLivestock(animal);
 			}
 		}
-
-		//System.out.println("\t ~sunset~");
 		catchDisease();
 	}
 
-//	public void buyAnimals(){
-//
-//		boolean continueBuying = true;
-//		while(continueBuying){
-//			System.out.println("\n+++++ Welcome to Harrods market places +++++");
-//			System.out.println("(-1) to exit");
-//			if(getType().equals("sheep")){
-//				System.out.println("Ewe prices are: ");
-//				System.out.println("(1) 12-24 months is 21 gold");
-//				System.out.println("(2) 24-36 months is 25 gold");
-//				System.out.println("Ram prices are: ");
-//				System.out.println("(3) 12-24 months is 21 gold");
-//				System.out.println("(4) 24-36 months is 30 gold");
-//			} else {
-//				System.out.println("Cow prices are: ");
-//				System.out.println("(1) 12-24 months is 21 gold");
-//				System.out.println("(2) 24-36 months is 25 gold");
-//				System.out.println("Bull prices are: ");
-//				System.out.println("(3) 12-24 months is 21 gold");
-//				System.out.println("(4) 24-36 months is 30 gold");
-//			}
-//
-//			int response = reader.nextInt();
-//
-//			if(response == -1){
-//				continueBuying = false;
-//			} else if(getType().equals("sheep")){
-//				if(response == 1){
-//					getLivestock().add(new Ewe(15));
-//					setAccount(getAccount() - 21);
-//				} else if(response == 2){
-//					getLivestock().add(new Ewe(25));
-//					setAccount(getAccount() - 25);
-//				} else if(response == 3){
-//					getLivestock().add(new Ram(15));
-//					setAccount(getAccount() - 21);
-//
-//				} else {
-//					getLivestock().add(new Ram(25));
-//					setAccount(getAccount() - 25);
-//				}
-//
-//			}else {
-//				if(response == 1 ){
-//					getLivestock().add(new Cow(15));
-//					setAccount(getAccount() - 21);
-//				} else if(response == 2){
-//					getLivestock().add(new Cow(25));
-//					setAccount(getAccount() - 25);
-//				} else if(response == 3){
-//					getLivestock().add(new Bull(15));
-//					setAccount(getAccount() - 21);
-//
-//				} else {
-//					getLivestock().add(new Bull(25));
-//					setAccount(getAccount() - 25);
-//				}
-//			}
-//		}
-//	}
 
 	public void incrementAnimalsAge(Livestock animal){
 		animal.setAgeInMonths(animal.getAgeInMonths() + 1);
@@ -213,10 +147,8 @@ public class LivestockField implements Field {
 
 			if(cow.getTimeInGestation() == cow.getGestationLength()){
 				System.out.println("A calf has been born.");
-				//calfBorn = true;
 				cow.setTimeInGestation(0);
 				cow.setImpregnated(false);
-				//numOfCalvesBorn++;
 				cow.setInCoolingPeriod(true);
 				pIter.add(new Cow(0));
 			}
@@ -226,10 +158,8 @@ public class LivestockField implements Field {
 
 			if(ewe.getTimeInGestation() == ewe.getGestationLength()){
 				System.out.println("A ewe has been born.");
-				//eweBorn = true;
 				ewe.setTimeInGestation(0);
 				ewe.setImpregnated(false);
-				//numOfEweBorn++;
 				ewe.setInCoolingPeriod(true);
 				pIter.add(new Ewe(0));
 			}
@@ -242,6 +172,7 @@ public class LivestockField implements Field {
 			fem.setTimeInCoolingPeriod(fem.getTimeInCoolingPeriod() + 1);
 
 			if(fem.getCoolingPeriodLength() == fem.getTimeInCoolingPeriod()){
+				System.out.println("setting to false");
 				fem.setInCoolingPeriod(false);
 			}
 		} else if((animal.getAgeInMonths() > 36) && !animal.isImpregnated()){
@@ -249,30 +180,6 @@ public class LivestockField implements Field {
 		}
 
 	}
-
-//	public void slaughterAnimals(){
-//
-//		while(true){
-//			System.out.println("\nEnter the number corresponding to the livestock you would " +
-//					"like to sell or -1 to exit.");
-//			printInfo();
-//			int num = reader.nextInt();
-//			if(num == -1){
-//				break;
-//			}else if(num >= 0 && num <= getLivestock().size()-1){
-//				Livestock animal = getLivestock().get(num);
-//				getLivestock().remove(num);
-//
-//				System.out.println("We will slaughter this " + animal.getType() +
-//						" and the price is " + animal.getCurrentCostOfAnimal());
-//
-//				addAnimalToBeSlaughtered(animal);
-//				setHarvest(true);
-//			}else {
-//				System.out.println("Invalid input.");
-//			}
-//		}
-//	}
 
 	public void impregnate(Livestock animal){
 
@@ -344,25 +251,8 @@ public class LivestockField implements Field {
 
 	@Override
 	public boolean isDestroyed() {
-		//TODO: Need to implement
-		return false;
+		return destroyed;
 	}
-
-//	public LinkedList<Cow> getCows() {
-//        return cows;
-//    }
-//
-//    public void addCow(Cow pCows) {
-//        cows.add(pCows);
-//    }
-//
-//    public LinkedList<Bull> getBulls() {
-//        return bulls;
-//    }
-//
-//    public void addBull(Bull pBull) {
-//        bulls.add(pBull);
-//    }
 
 	public LinkedList<Livestock> getLivestock() {
 		return livestock;
@@ -371,23 +261,19 @@ public class LivestockField implements Field {
 	@Override
 	public int getCyclesTillHarvest() {
 		return 0;
-		//TODO: Need to implement
 	}
 
 	@Override
 	public void setCyclesTillHarvest(int cyclesTillHarvest) {
-		//TODO: Need to implement
 	}
 
 	@Override
 	public int getAmountOfCyclesBeforeHarvest() {
 		return 0;
-		//TODO: Need to implement
 	}
 
 	@Override
 	public void setCycleSincePlanted(int daySincePlanted) {
-		//TODO: Need to implement
 	}
 
 	public void addToLivestock(Livestock animal) {

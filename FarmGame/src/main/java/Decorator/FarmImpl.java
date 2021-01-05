@@ -127,9 +127,7 @@ public class FarmImpl implements Farm {
                         buyAnimals(field);
                     } else if(response == 2){
                         slaughterAnimals(field);
-                    } //else {
-//                        //System.out.println("Good night");
-//                    }
+                    }
                 }
                 System.out.println("\t ~sunset~");
             }
@@ -260,8 +258,6 @@ public class FarmImpl implements Farm {
             }else {
                 System.out.println("Invalid input.");
             }
-
-            //TODO: Can sort out this... slaughter straight from here
         }
     }
 
