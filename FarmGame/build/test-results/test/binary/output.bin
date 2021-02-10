@@ -1,0 +1,66 @@
+
+*** This animal has died ***
+
+This animal has died.ram
+
+*** This animal has died ***
+
+This animal has died.ewe
+
+@ Your flock is unable to expand without a ram old enough in it.
+
+(-------------------------------------- 
+
+
+Field:	sheep
+*Crop has caught disease during the night.
+
+
+(-------------------------------------- 
+
+
+@ Your flock is unable to expand without a ram old enough in it.
+CThis field has been diseased for a full cycle. It is now destroyed
+CThis field has been diseased for a full cycle. It is now destroyed
+A ewe has been born.
+A calf has been born.
+
+	 ~Sunrise~
+
+?Field type: wheat, days since planted: 0, days till harvest: 9
+
+$Does this field have disease: false
+
+Is this field destroyed: false
+
+	 ~sunset~
+
+	 ~sunset~
+
+?Field type: maize, days since planted: 0, days till harvest: 8
+
+$Does this field have disease: false
+
+Is this field destroyed: false
+
+	 ~sunset~
+
+	 ~sunset~
+
+
+
+(-------------------------------------- 
+
+
+
+
+
+;Field:	maize --> Crop has caught disease during the night.
+
+
+
+
+
+(-------------------------------------- 
+
+

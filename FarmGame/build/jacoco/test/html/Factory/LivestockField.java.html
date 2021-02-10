@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LivestockField.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FarmGame</a> &gt; <a href="index.source.html" class="el_package">Factory</a> &gt; <span class="el_source">LivestockField.java</span></div><h1>LivestockField.java</h1><pre class="source lang-java linenums">package Factory;
+
+import java.util.*;
+
+public class LivestockField implements Field {
+
+	private final String type;
+	private double profit;
+	private double chanceOfDisease;
+	private final int maxNumberOfLivestock;
+<span class="fc" id="L11">	boolean destroyed = false;</span>
+	private boolean diseased;
+	private boolean harvest;
+	private Scanner reader;
+	private double account;
+
+	private LinkedList&lt;Livestock&gt; livestock;
+	private LinkedList&lt;Livestock&gt; animalsToBeSlaughtered;
+
+<span class="fc" id="L20">	public LivestockField(String type, int numOfAnimals){</span>
+<span class="fc" id="L21">		this.type = type;</span>
+<span class="fc" id="L22">		this.maxNumberOfLivestock = numOfAnimals;</span>
+<span class="fc" id="L23">		livestock = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L24">		animalsToBeSlaughtered = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L25">		reader = new Scanner(System.in, &quot;UTF-8&quot;);</span>
+<span class="fc" id="L26">	}</span>
+
+	public void printInfo(){
+
+<span class="nc" id="L30">		int count = 0;</span>
+<span class="nc" id="L31">		System.out.println(&quot;\n---------------------------------------- &quot;);</span>
+<span class="nc" id="L32">		System.out.println(&quot;This fields livestock information:\n&quot;);</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">		for(Livestock animal : livestock){</span>
+<span class="nc" id="L34">			System.out.print(count);</span>
+<span class="nc" id="L35">			System.out.print(&quot;, &quot; + animal.getType());</span>
+<span class="nc" id="L36">			System.out.printf(&quot;, price at slaughter: %.2f&quot;, animal.getCurrentCostOfAnimal());</span>
+<span class="nc" id="L37">			System.out.print(&quot; in gold, is the animal fully sized: &quot; + animal.isFullySized());</span>
+<span class="nc" id="L38">			System.out.print(&quot;, age in months: &quot; + animal.getAgeInMonths());</span>
+
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			if(animal.isImpregnated()){</span>
+<span class="nc bnc" id="L41" title="All 4 branches missed.">				if(animal.getType().equals(&quot;cow&quot;) || animal.getType().equals(&quot;ewe&quot;)){</span>
+<span class="nc" id="L42">					FemaleLivestock femLiv = (FemaleLivestock) animal;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">					if(animal.isImpregnated()){</span>
+<span class="nc" id="L44">						System.out.print(&quot;. It is pregnant&quot;);</span>
+<span class="nc" id="L45">						System.out.print(&quot;, &quot; + femLiv.getTimeInGestation() + &quot; cycle into pregnancy. &quot;);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">					} else if (animal.isInCoolingPeriod()){</span>
+<span class="nc" id="L47">						System.out.print(&quot;. It is in a cooling period while nursing its young.&quot;);</span>
+					}
+
+				}
+			}
+<span class="nc" id="L52">			System.out.println(&quot;&quot;);</span>
+
+<span class="nc bnc" id="L54" title="All 2 branches missed.">			if( animal.getMaxAge() - animal.getAgeInMonths() &lt; 6 ) {</span>
+<span class="nc" id="L55">				System.out.print(&quot; ** This animal is showing signs of old age! &quot;);</span>
+<span class="nc" id="L56">				System.out.println(&quot;Animals has roughly &quot; + (animal.getMaxAge() - animal.getAgeInMonths())</span>
+				+ &quot; months to live. But it could die any cycle. **&quot;);
+				// TODO: implement random could die any time...
+			}
+
+<span class="nc" id="L61">			count++;</span>
+<span class="nc" id="L62">		}</span>
+<span class="nc" id="L63">		System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L64">	}</span>
+
+	@Override
+	public String getType(){
+<span class="fc" id="L68">		return type;</span>
+	}
+
+	@Override
+	public double getProfit() {
+
+<span class="fc" id="L74">		double totalProfit = 0;</span>
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		for(Livestock animal : livestock){</span>
+<span class="fc" id="L77">			totalProfit += animal.getCurrentCostOfAnimal();</span>
+<span class="fc" id="L78">		}</span>
+
+<span class="fc" id="L80">		return totalProfit;</span>
+	}
+
+	public void setProfit(double amount){
+<span class="nc" id="L84">		profit = amount;</span>
+<span class="nc" id="L85">	}</span>
+
+	@Override
+	public double getChanceOfDisease() {
+<span class="fc" id="L89">		return chanceOfDisease;</span>
+	}
+
+	@Override
+	public void setChanceOfDisease(double chanceOfDisease) {
+<span class="fc" id="L94">		this.chanceOfDisease = chanceOfDisease;</span>
+<span class="fc" id="L95">	}</span>
+
+	@Override
+	public void cycleInfo() {
+<span class="nc" id="L99">		printInfo();</span>
+
+<span class="nc" id="L101">		System.out.println(&quot;Does this field have disease: &quot; + diseased);</span>
+<span class="nc" id="L102">		System.out.println(&quot;Is this field destroyed: &quot; + isDestroyed());</span>
+
+<span class="nc" id="L104">	}</span>
+
+	public void nightCycle(){
+
+<span class="fc" id="L108">		ListIterator&lt;Livestock&gt; iter = getLivestock().listIterator();</span>
+
+<span class="fc bfc" id="L110" title="All 2 branches covered.">		while(iter.hasNext()){</span>
+
+<span class="fc" id="L112">			Livestock animal = iter.next();</span>
+
+<span class="fc" id="L114">			incrementAnimalsAge(animal);</span>
+
+<span class="fc bfc" id="L116" title="All 2 branches covered.">			if(animal.getAgeInMonths() == animal.getMaxAge()){</span>
+<span class="fc" id="L117">				System.out.println(&quot;\n*** This animal has died ***\n&quot;);</span>
+<span class="fc" id="L118">				System.out.println(&quot;This animal has died.&quot; + animal.getType());</span>
+<span class="fc" id="L119">				iter.remove();</span>
+<span class="fc" id="L120">				continue;</span>
+			}
+
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">			if(animal.isImpregnated()){</span>
+<span class="nc" id="L124">				cycleForPregnantAnimal(iter, animal);</span>
+			}
+
+<span class="pc bpc" id="L127" title="2 of 4 branches missed.">			if(animal.getType().equals(&quot;cow&quot;) || animal.getType().equals(&quot;ewe&quot;)){</span>
+<span class="fc" id="L128">				femLivestock(animal);</span>
+			}
+<span class="fc" id="L130">		}</span>
+<span class="fc" id="L131">		catchDisease();</span>
+<span class="fc" id="L132">	}</span>
+
+
+	public void incrementAnimalsAge(Livestock animal){
+<span class="fc" id="L136">		animal.setAgeInMonths(animal.getAgeInMonths() + 1);</span>
+
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		if(animal.getAgeInMonths() &gt;= 36)</span>
+<span class="fc" id="L139">			animal.setFullySized(true);</span>
+
+<span class="fc" id="L141">	}</span>
+
+	public void cycleForPregnantAnimal(ListIterator&lt;Livestock&gt; pIter, Livestock animal){
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		if(animal.getType().equals(&quot;cow&quot;)){</span>
+<span class="fc" id="L145">			Cow cow = (Cow) animal;</span>
+<span class="fc" id="L146">			cow.setTimeInGestation(cow.getTimeInGestation() + 1);</span>
+
+<span class="fc bfc" id="L148" title="All 2 branches covered.">			if(cow.getTimeInGestation() == cow.getGestationLength()){</span>
+<span class="fc" id="L149">				System.out.println(&quot;A calf has been born.&quot;);</span>
+<span class="fc" id="L150">				cow.setTimeInGestation(0);</span>
+<span class="fc" id="L151">				cow.setImpregnated(false);</span>
+<span class="fc" id="L152">				cow.setInCoolingPeriod(true);</span>
+<span class="fc" id="L153">				pIter.add(new Cow(0));</span>
+			}
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		}else if(animal.getType().equals(&quot;ewe&quot;)){</span>
+<span class="fc" id="L156">			Ewe ewe = (Ewe) animal;</span>
+<span class="fc" id="L157">			ewe.setTimeInGestation(ewe.getTimeInGestation() + 1);</span>
+
+<span class="fc bfc" id="L159" title="All 2 branches covered.">			if(ewe.getTimeInGestation() == ewe.getGestationLength()){</span>
+<span class="fc" id="L160">				System.out.println(&quot;A ewe has been born.&quot;);</span>
+<span class="fc" id="L161">				ewe.setTimeInGestation(0);</span>
+<span class="fc" id="L162">				ewe.setImpregnated(false);</span>
+<span class="fc" id="L163">				ewe.setInCoolingPeriod(true);</span>
+<span class="fc" id="L164">				pIter.add(new Ewe(0));</span>
+			}
+		}
+<span class="fc" id="L167">	}</span>
+
+	public void femLivestock(Livestock animal){
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		if(animal.isInCoolingPeriod()){</span>
+<span class="fc" id="L171">			FemaleLivestock fem = (FemaleLivestock) animal;</span>
+<span class="fc" id="L172">			fem.setTimeInCoolingPeriod(fem.getTimeInCoolingPeriod() + 1);</span>
+
+<span class="fc bfc" id="L174" title="All 2 branches covered.">			if(fem.getCoolingPeriodLength() == fem.getTimeInCoolingPeriod()){</span>
+<span class="fc" id="L175">				fem.setInCoolingPeriod(false);</span>
+			}
+<span class="pc bpc" id="L177" title="1 of 4 branches missed.">		} else if((animal.getAgeInMonths() &gt; 36) &amp;&amp; !animal.isImpregnated()){</span>
+<span class="fc" id="L178">			impregnate(animal);</span>
+		}
+
+<span class="fc" id="L181">	}</span>
+
+	public void impregnate(Livestock animal) {
+
+<span class="fc" id="L185">		boolean ramPresent = false;</span>
+
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		for( Livestock a : getLivestock()){</span>
+<span class="pc bpc" id="L188" title="3 of 4 branches missed.">			if (a.getType().equals(&quot;ram&quot;) &amp;&amp; a.getAgeInMonths() &gt; 23 ||</span>
+<span class="pc bpc" id="L189" title="3 of 4 branches missed.">					a.getType().equals(&quot;bull&quot;) &amp;&amp; a.getAgeInMonths() &gt; 23){</span>
+<span class="nc" id="L190">				ramPresent = true;</span>
+<span class="nc" id="L191">				break;</span>
+			}
+<span class="fc" id="L193">		}</span>
+
+<span class="fc" id="L195">		Random random = new Random();</span>
+
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">		if(ramPresent){</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">			if(animal.getType().equals(&quot;cow&quot;)){</span>
+<span class="nc" id="L199">				Cow cow = (Cow) animal;</span>
+<span class="nc" id="L200">				int numb = random.nextInt(10 - 1 + 1) + 1;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">				if (numb &lt;= cow.getChanceToBeImpregnated()) {</span>
+<span class="nc" id="L202">					cow.setImpregnated(true);</span>
+<span class="nc" id="L203">					cow.setTimeInGestation(0);</span>
+				}
+<span class="nc bnc" id="L205" title="All 2 branches missed.">			}else if(animal.getType().equals(&quot;ewe&quot;)){</span>
+<span class="nc" id="L206">				Ewe ewe = (Ewe) animal;</span>
+
+<span class="nc" id="L208">				int numb = random.nextInt(10 - 1 + 1) + 1;</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">				if (numb &lt;= ewe.getChanceToBeImpregnated()) {</span>
+<span class="nc" id="L210">					ewe.setImpregnated(true);</span>
+<span class="nc" id="L211">					ewe.setTimeInGestation(0);</span>
+				}
+<span class="nc" id="L213">			}else{</span>
+<span class="nc" id="L214">				System.out.println(&quot;This animal type cannot be impregnated.&quot;);</span>
+			}
+		} else {
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">			if(animal.getType().equals(&quot;ewe&quot;))</span>
+<span class="fc" id="L218">				System.out.println(&quot;\n Your flock is unable to expand without a &quot; +</span>
+						&quot;ram old enough in it.&quot;);
+			else
+<span class="nc" id="L221">				System.out.println(&quot;\n Your herd is unable to expand without a &quot; +</span>
+						&quot;bull old enough in it.&quot;);
+		}
+<span class="fc" id="L224">	}</span>
+
+	@Override
+	public boolean canHarvest() {
+<span class="fc" id="L228">		return harvest;</span>
+	}
+
+	@Override
+	public void setHarvest(boolean pHarvest) {
+<span class="nc" id="L233">		harvest = pHarvest;</span>
+<span class="nc" id="L234">	}</span>
+
+	@Override
+	public boolean isDiseased() {
+<span class="fc" id="L238">		return diseased;</span>
+	}
+
+	@Override
+	public void setIsDiseased(boolean pDiseased) {
+<span class="fc" id="L243">		this.diseased = pDiseased;</span>
+
+<span class="fc" id="L245">	}</span>
+
+	@Override
+	public void catchDisease() {
+<span class="fc" id="L249">		Random random = new Random();</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">		if(isDiseased()){</span>
+<span class="fc" id="L251">			System.out.println(&quot;This field has been diseased for a full cycle.&quot; +</span>
+					&quot; It is now destroyed&quot;);
+<span class="fc" id="L253">			destroyed = true;</span>
+		} else {
+<span class="fc" id="L255">			int numb = random.nextInt(10 - 1 + 1) + 1;</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">			if (numb &lt;= getChanceOfDisease()) {</span>
+<span class="fc" id="L257">				setIsDiseased(true);</span>
+<span class="fc" id="L258">				System.out.println(&quot;\n-------------------------------------- \n&quot;);</span>
+<span class="fc" id="L259">				System.out.println(&quot;\nField:\t&quot; + getType());</span>
+<span class="fc" id="L260">				System.out.println(&quot;Crop has caught disease during the night.\n&quot;);</span>
+<span class="fc" id="L261">				System.out.println(&quot;\n-------------------------------------- \n&quot;);</span>
+			}
+		}
+<span class="fc" id="L264">	}</span>
+
+	@Override
+	public boolean isDestroyed() {
+<span class="fc" id="L268">		return destroyed;</span>
+	}
+
+	public LinkedList&lt;Livestock&gt; getLivestock() {
+<span class="fc" id="L272">		return livestock;</span>
+	}
+
+	@Override
+	public int getCyclesTillHarvest() {
+<span class="nc" id="L277">		return 0;</span>
+	}
+
+	@Override
+	public void setCyclesTillHarvest(int cyclesTillHarvest) {
+<span class="nc" id="L282">	}</span>
+
+	@Override
+	public int getAmountOfCyclesBeforeHarvest() {
+<span class="nc" id="L286">		return 0;</span>
+	}
+
+	@Override
+	public void setCycleSincePlanted(int daySincePlanted) {
+<span class="nc" id="L291">	}</span>
+
+	public void addToLivestock(Livestock animal) {
+<span class="fc" id="L294">		livestock.add(animal);</span>
+<span class="fc" id="L295">	}</span>
+
+	public LinkedList&lt;Livestock&gt; getAnimalsToBeSlaughtered() {
+<span class="nc" id="L298">		return animalsToBeSlaughtered;</span>
+	}
+
+	public void addAnimalToBeSlaughtered(Livestock animal) {
+<span class="nc" id="L302">		animalsToBeSlaughtered.add(animal);</span>
+<span class="nc" id="L303">	}</span>
+
+	public double getAccount() {
+<span class="nc" id="L306">		return account;</span>
+	}
+
+	public void setAccount(double account) {
+<span class="nc" id="L310">		this.account = account;</span>
+<span class="nc" id="L311">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

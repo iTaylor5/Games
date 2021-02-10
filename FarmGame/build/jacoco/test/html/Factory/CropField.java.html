@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CropField.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FarmGame</a> &gt; <a href="index.source.html" class="el_package">Factory</a> &gt; <span class="el_source">CropField.java</span></div><h1>CropField.java</h1><pre class="source lang-java linenums">package Factory;
+
+import java.util.LinkedList;
+import java.util.Random;
+
+public class CropField implements Field {
+
+	private final String type;
+	private double profit;
+	private double chanceOfDisease;
+	private int cyclesTillHarvest;
+	private int cyclesSincePlanted;
+	private final int amountOfCyclesBeforeHarvest;
+	private boolean harvest;
+	private boolean diseased;
+<span class="fc" id="L16">	boolean destroyed = false;</span>
+	private double account;
+	private Random random;
+
+<span class="fc" id="L20">	public CropField(String type, int cyclesBeforeHarvest){</span>
+<span class="fc" id="L21">		this.type = type;</span>
+<span class="fc" id="L22">		this.amountOfCyclesBeforeHarvest = cyclesBeforeHarvest;</span>
+<span class="fc" id="L23">		harvest = false;</span>
+<span class="fc" id="L24">	}</span>
+
+	@Override
+	public String getType(){
+<span class="fc" id="L28">		return type;</span>
+	}
+
+	@Override
+	public double getProfit(){
+<span class="fc" id="L33">		return profit;</span>
+	}
+
+	@Override
+	public void setProfit(double profit){
+<span class="fc" id="L38">		this.profit = profit;</span>
+<span class="fc" id="L39">	}</span>
+
+	@Override
+	public double getChanceOfDisease() {
+<span class="fc" id="L43">		return chanceOfDisease;</span>
+	}
+
+	@Override
+	public void setChanceOfDisease(double chanceOfDisease) {
+<span class="fc" id="L48">		this.chanceOfDisease = chanceOfDisease;</span>
+<span class="fc" id="L49">	}</span>
+
+//	@Override
+//	public void cycleInfo() {
+//
+//	}
+
+	@Override
+	public boolean canHarvest() {
+<span class="fc" id="L58">		return harvest;</span>
+	}
+
+	@Override
+	public void setHarvest(boolean pHarvest) {
+<span class="fc" id="L63">		harvest = pHarvest;</span>
+<span class="fc" id="L64">	}</span>
+
+	@Override
+	public boolean isDiseased() {
+<span class="fc" id="L68">		return diseased;</span>
+	}
+
+	@Override
+	public void setIsDiseased(boolean pDiseased) {
+<span class="fc" id="L73">		this.diseased = pDiseased;</span>
+<span class="fc" id="L74">	}</span>
+
+	@Override
+	public void catchDisease() {
+<span class="fc" id="L78">		random = new Random();</span>
+
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		if(isDiseased()){</span>
+<span class="nc" id="L81">			System.out.println(&quot;This field has been diseased for a full cycle.&quot; +</span>
+					&quot; It is now destroyed&quot;);
+<span class="nc" id="L83">			destroyed = true;</span>
+		} else {
+<span class="fc" id="L85">			int numb = random.nextInt(10 - 1 + 1) + 1;</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">			if (numb &lt;= getChanceOfDisease()) {</span>
+<span class="fc" id="L87">				setIsDiseased(true);</span>
+<span class="fc" id="L88">				System.out.println(&quot;\n-------------------------------------- \n&quot;);</span>
+<span class="fc" id="L89">				System.out.print(&quot;\nField:\t&quot; + getType());</span>
+<span class="fc" id="L90">				System.out.println(&quot; --&gt; Crop has caught disease during the night.\n&quot;);</span>
+<span class="fc" id="L91">				System.out.println(&quot;\n-------------------------------------- \n&quot;);</span>
+			}
+		}
+<span class="fc" id="L94">	}</span>
+
+	@Override
+	public boolean isDestroyed() {
+<span class="fc" id="L98">		return destroyed;</span>
+	}
+
+	@Override
+	public LinkedList&lt;Livestock&gt; getAnimalsToBeSlaughtered() {
+<span class="fc" id="L103">		return null;</span>
+	}
+
+	@Override
+	public void addAnimalToBeSlaughtered(Livestock animal) {
+		//TODO: Get rid of...
+<span class="nc" id="L109">	}</span>
+
+	@Override
+	public double getAccount() {
+<span class="fc" id="L113">		return account;</span>
+	}
+
+	@Override
+	public void setAccount(double pAccount) {
+<span class="nc" id="L118">		account = pAccount;</span>
+<span class="nc" id="L119">	}</span>
+
+	@Override
+	public void cycleInfo() {
+<span class="fc" id="L123">		System.out.print(&quot;Field type: &quot; + getType());</span>
+<span class="fc" id="L124">		System.out.print(&quot;, days since planted: &quot; + cyclesSincePlanted);</span>
+<span class="fc" id="L125">		System.out.println(&quot;, days till harvest: &quot; + cyclesTillHarvest);</span>
+<span class="fc" id="L126">		System.out.println(&quot;Does this field have disease: &quot; + diseased);</span>
+<span class="fc" id="L127">		System.out.println(&quot;Is this field destroyed: &quot; + isDestroyed());</span>
+<span class="fc" id="L128">	}</span>
+
+	public void nightCycle(){
+<span class="fc" id="L131">		setCyclesTillHarvest(getCyclesTillHarvest() - 1);</span>
+<span class="fc" id="L132">		setCycleSincePlanted(getCycleSincePlanted() + 1 );</span>
+<span class="fc" id="L133">		System.out.println(&quot;\t ~sunset~&quot;);</span>
+<span class="fc" id="L134">		catchDisease();</span>
+<span class="fc" id="L135">	}</span>
+
+	@Override
+	public void printInfo() {
+		//TODO: Get rid of...
+<span class="nc" id="L140">	}</span>
+
+	@Override
+	public LinkedList&lt;Livestock&gt; getLivestock() {
+		//TODO: sort out....
+<span class="fc" id="L145">		return null;</span>
+	}
+
+	public int getCycleSincePlanted() {
+<span class="fc" id="L149">		return cyclesSincePlanted;</span>
+	}
+
+	public int getCyclesTillHarvest() {
+<span class="fc" id="L153">		return cyclesTillHarvest;</span>
+	}
+
+	public void setCyclesTillHarvest(int cyclesTillHarvest) {
+<span class="fc" id="L157">		this.cyclesTillHarvest = cyclesTillHarvest;</span>
+<span class="fc" id="L158">	}</span>
+
+	public void setCycleSincePlanted(int daySincePlanted) {
+<span class="fc" id="L161">		this.cyclesSincePlanted = daySincePlanted;</span>
+<span class="fc" id="L162">	}</span>
+
+	public int getAmountOfCyclesBeforeHarvest() {
+<span class="nc" id="L165">		return amountOfCyclesBeforeHarvest;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

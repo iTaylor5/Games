@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FarmImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FarmGame</a> &gt; <a href="index.source.html" class="el_package">Decorator</a> &gt; <span class="el_source">FarmImpl.java</span></div><h1>FarmImpl.java</h1><pre class="source lang-java linenums">package Decorator;
+
+import Factory.*;
+import Mediator.Mediator;
+
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+public class FarmImpl implements Farm {
+
+    private Mediator mediator;
+    private List&lt;Field&gt; farmFields;
+    private String name;
+    private double bank;
+    private double bonus;
+    private Scanner reader;
+
+    private int farmLevel;
+    private int maxNumOfFields;
+
+<span class="fc" id="L23">    public FarmImpl(Mediator newMediator, String farmName){</span>
+<span class="fc" id="L24">        farmFields = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L25">        this.name = farmName;</span>
+<span class="fc" id="L26">        this.mediator = newMediator;</span>
+<span class="fc" id="L27">        mediator.addFarm(this);</span>
+<span class="fc" id="L28">        farmLevel = 1;</span>
+<span class="fc" id="L29">        maxNumOfFields = 2;</span>
+<span class="fc" id="L30">        setBonus(1);</span>
+<span class="fc" id="L31">        reader = new Scanner(System.in, StandardCharsets.UTF_8);</span>
+
+<span class="fc" id="L33">    }</span>
+
+    public void harvest(){
+
+<span class="nc" id="L37">        double turnOver = 0;</span>
+<span class="nc" id="L38">        double fromFieldsAccount = 0;</span>
+
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        for(Field field : farmFields){</span>
+<span class="nc bnc" id="L41" title="All 4 branches missed.">            if(field.canHarvest() &amp;&amp; (field.getType().equals(&quot;wheat&quot;) ||</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">                    field.getType().equals(&quot;maize&quot;))){</span>
+
+<span class="nc" id="L44">                turnOver += field.getProfit();</span>
+<span class="nc" id="L45">                field.setHarvest(false);</span>
+<span class="nc bnc" id="L46" title="All 4 branches missed.">            }else if(field.canHarvest() &amp;&amp; (field.getType().equals(&quot;cattle&quot;) ||</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">                    field.getType().equals(&quot;sheep&quot;))){</span>
+
+<span class="nc" id="L49">                System.out.println(&quot;Slaughtering....&quot;);</span>
+<span class="nc" id="L50">                System.out.println(&quot;Number of animals to be slaughtered is: &quot; +</span>
+<span class="nc" id="L51">                        field.getAnimalsToBeSlaughtered().size());</span>
+
+<span class="nc bnc" id="L53" title="All 2 branches missed.">                for(Livestock animal : field.getAnimalsToBeSlaughtered()) {</span>
+<span class="nc" id="L54">                    turnOver += animal.getCurrentCostOfAnimal();</span>
+<span class="nc" id="L55">                }</span>
+<span class="nc" id="L56">                field.getAnimalsToBeSlaughtered().clear();</span>
+
+<span class="nc" id="L58">                field.setHarvest(false);</span>
+            }
+<span class="nc" id="L60">            fromFieldsAccount += field.getAccount();</span>
+<span class="nc" id="L61">            field.setAccount(0);</span>
+<span class="nc" id="L62">        }</span>
+
+<span class="nc" id="L64">        turnOver = turnOver * bonus;</span>
+
+<span class="nc" id="L66">        turnOver += fromFieldsAccount;</span>
+
+<span class="nc" id="L68">        setBank(getBank() + turnOver);</span>
+
+<span class="nc" id="L70">        mediator.harvest(this);</span>
+<span class="nc" id="L71">    }</span>
+
+    /**
+     * This method runs through all the fields of the farm.
+     * Sorts out if they are diseased.
+     * For live stock fields you have the chance to buy or slaughter animals.
+     */
+     public void cycle(){
+<span class="fc" id="L79">        int index = 0;</span>
+
+<span class="fc" id="L81">         System.out.println(&quot;\t ~Sunrise~&quot;);</span>
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for(Field field : getFields()){</span>
+
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">            if (field.isDiseased()){</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                if(mediator.getGold() &gt;= 12){</span>
+<span class="nc" id="L88">                    mediator.setGold(mediator.getGold() - 8);</span>
+<span class="nc" id="L89">                    field.setIsDiseased(false);</span>
+<span class="nc" id="L90">                    System.out.println(&quot;You have cured the field of disease&quot;);</span>
+<span class="nc" id="L91">                    field.cycleInfo();</span>
+                } else {
+<span class="nc" id="L93">                    System.out.println(field.getType() + &quot; is diseased!&quot;);</span>
+<span class="nc" id="L94">                    System.out.println(&quot;(yes/no) would you like to repair it?&quot;);</span>
+<span class="nc" id="L95">                    String response = reader.nextLine();</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                    if(response.equalsIgnoreCase(&quot;yes&quot;)) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                        if (mediator.getGold() &gt;= 8 ){</span>
+<span class="nc" id="L98">                            mediator.setGold(mediator.getGold() - 8);</span>
+<span class="nc" id="L99">                            field.setIsDiseased(false);</span>
+<span class="nc" id="L100">                            System.out.println(&quot;You have cured the field of disease&quot;);</span>
+<span class="nc" id="L101">                            field.cycleInfo();</span>
+                        } else {
+<span class="nc" id="L103">                            System.out.println(&quot;\n !!! You do not have enough money !!!&quot;);</span>
+<span class="nc" id="L104">                            getFields().remove(index);</span>
+                        }
+                    } else{
+<span class="nc" id="L107">                        System.out.println(&quot;This crop will be dead tomorrow.&quot;);</span>
+<span class="nc" id="L108">                        getFields().remove(index);</span>
+                    }
+<span class="nc" id="L110">                }</span>
+            } else {
+<span class="fc" id="L112">                field.cycleInfo();</span>
+
+<span class="pc bpc" id="L114" title="1 of 4 branches missed.">                if(field.getType().equals(&quot;wheat&quot;) || field.getType().equals(&quot;maize&quot;)){</span>
+<span class="pc bpc" id="L115" title="3 of 4 branches missed.">                    if (field.getCyclesTillHarvest() == 0 &amp;&amp; !field.isDestroyed()) {</span>
+<span class="nc" id="L116">                        System.out.println(&quot;Time to harvest!!!&quot;);</span>
+<span class="nc" id="L117">                        field.setHarvest(true);</span>
+<span class="nc" id="L118">                        field.setCyclesTillHarvest(field.getAmountOfCyclesBeforeHarvest());</span>
+<span class="nc" id="L119">                        field.setCycleSincePlanted(0);</span>
+                    }
+                }else {
+<span class="nc" id="L122">                    System.out.println(&quot;(1) Would you like to buy more &quot; + field.getType() + &quot;?&quot;);</span>
+<span class="nc" id="L123">                    System.out.println(&quot;(2) Would you like to slaughter &quot; + field.getType() + &quot;?&quot;);</span>
+<span class="nc" id="L124">                    System.out.println(&quot;(3) Continue&quot;);</span>
+<span class="nc" id="L125">                    int response = reader.nextInt();</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                    if(response == 1){</span>
+<span class="nc" id="L127">                        buyAnimals(field);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                    } else if(response == 2){</span>
+<span class="nc" id="L129">                        slaughterAnimals(field);</span>
+                    }
+                }
+<span class="fc" id="L132">                System.out.println(&quot;\t ~sunset~&quot;);</span>
+            }
+<span class="fc" id="L134">            field.nightCycle();</span>
+<span class="fc" id="L135">            index++;</span>
+<span class="fc" id="L136">        }</span>
+<span class="fc" id="L137">    }</span>
+
+    public void buyAnimals(Field field){
+
+<span class="nc" id="L141">        boolean continueBuying = false;</span>
+
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if(mediator.getGold() &gt;= 21){</span>
+<span class="nc" id="L144">            continueBuying = true;</span>
+        } else {
+<span class="nc" id="L146">            System.out.println(&quot;You do not have enough money!&quot;);</span>
+        }
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        while(continueBuying){</span>
+
+<span class="nc" id="L151">            System.out.println(&quot;\n+++++ Welcome to Harrods market places +++++&quot;);</span>
+<span class="nc" id="L152">            System.out.println(&quot;(-1) to exit&quot;);</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">            if(field.getType().equals(&quot;sheep&quot;)){</span>
+<span class="nc" id="L154">                System.out.println(&quot;Ewe prices are: &quot;);</span>
+<span class="nc" id="L155">                System.out.println(&quot;(1) 12-24 months is 21 gold&quot;);</span>
+<span class="nc" id="L156">                System.out.println(&quot;(2) 24-36 months is 25 gold&quot;);</span>
+<span class="nc" id="L157">                System.out.println(&quot;Ram prices are: &quot;);</span>
+<span class="nc" id="L158">                System.out.println(&quot;(3) 12-24 months is 21 gold&quot;);</span>
+<span class="nc" id="L159">                System.out.println(&quot;(4) 24-36 months is 30 gold&quot;);</span>
+            } else {
+<span class="nc" id="L161">                System.out.println(&quot;Cow prices are: &quot;);</span>
+<span class="nc" id="L162">                System.out.println(&quot;(1) 12-24 months is 21 gold&quot;);</span>
+<span class="nc" id="L163">                System.out.println(&quot;(2) 24-36 months is 25 gold&quot;);</span>
+<span class="nc" id="L164">                System.out.println(&quot;Bull prices are: &quot;);</span>
+<span class="nc" id="L165">                System.out.println(&quot;(3) 12-24 months is 21 gold&quot;);</span>
+<span class="nc" id="L166">                System.out.println(&quot;(4) 24-36 months is 30 gold&quot;);</span>
+            }
+
+<span class="nc" id="L169">            int response = reader.nextInt();</span>
+
+<span class="nc bnc" id="L171" title="All 2 branches missed.">            if(response == -1){</span>
+<span class="nc" id="L172">                System.out.println(&quot;You chose to exit.&quot;);</span>
+<span class="nc" id="L173">                continueBuying = false;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            } else if(field.getType().equals(&quot;sheep&quot;)){</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                if(response == 1){</span>
+<span class="nc" id="L176">                    field.getLivestock().add(new Ewe(15));</span>
+<span class="nc" id="L177">                    mediator.setGold(mediator.getGold() - 21);</span>
+<span class="nc" id="L178">                    System.out.println(&quot;Congrats on  you new purchase of a: &quot; +</span>
+                            &quot;new 15 month old ewe.&quot;);
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                } else if(response == 2){</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                    if(mediator.getGold() &gt;= 25){</span>
+<span class="nc" id="L182">                        field.getLivestock().add(new Ewe(25));</span>
+<span class="nc" id="L183">                        mediator.setGold(mediator.getGold() - 25);</span>
+<span class="nc" id="L184">                        System.out.println(&quot;Congrats on  you new purchase of a: &quot; +</span>
+                                &quot;new 25 month old ewe.&quot;);
+                    }else{
+<span class="nc" id="L187">                        System.out.println(&quot;You do not have enough gold.&quot;);</span>
+                    }
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                } else if(response == 3){</span>
+<span class="nc" id="L190">                    field.getLivestock().add(new Ram(15));</span>
+<span class="nc" id="L191">                    mediator.setGold(mediator.getGold() - 21);</span>
+<span class="nc" id="L192">                    System.out.println(&quot;Congrats on  you new purchase of a: &quot; +</span>
+                            &quot;new 15 month old ram.&quot;);
+                } else {
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                    if(mediator.getGold() &gt;= 25){</span>
+<span class="nc" id="L196">                        field.getLivestock().add(new Ram(25));</span>
+<span class="nc" id="L197">                        mediator.setGold(mediator.getGold() - 25);</span>
+<span class="nc" id="L198">                        System.out.println(&quot;Congrats on  you new purchase of a: &quot; +</span>
+                                &quot;new 25 month old ram.&quot;);
+                    }else{
+<span class="nc" id="L201">                        System.out.println(&quot;You do not have enough gold.&quot;);</span>
+                    }
+                }
+            }else {
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                if(response == 1 ){</span>
+<span class="nc" id="L206">                    field.getLivestock().add(new Cow(15));</span>
+<span class="nc" id="L207">                    mediator.setGold(mediator.getGold() - 21);</span>
+<span class="nc" id="L208">                    System.out.println(&quot;Congrats on  you new purchase of a: &quot; +</span>
+                            &quot;new 15 month old cow.&quot;);
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                } else if(response == 2){</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                    if(mediator.getGold() &gt;= 25){</span>
+<span class="nc" id="L212">                        field.getLivestock().add(new Cow(25));</span>
+<span class="nc" id="L213">                        mediator.setGold(mediator.getGold() - 25);</span>
+<span class="nc" id="L214">                        System.out.println(&quot;Congrats on  you new purchase of a: &quot; +</span>
+                                &quot;new 25 month old cow.&quot;);
+                    }else{
+<span class="nc" id="L217">                        System.out.println(&quot;You do not have enough gold.&quot;);</span>
+                    }
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                } else if(response == 3){</span>
+<span class="nc" id="L220">                    field.getLivestock().add(new Bull(15));</span>
+<span class="nc" id="L221">                    mediator.setGold(mediator.getGold() - 21);</span>
+<span class="nc" id="L222">                    System.out.println(&quot;Congrats on  you new purchase of a: &quot; +</span>
+                            &quot;new 21 month old bull.&quot;);
+                } else {
+<span class="nc bnc" id="L225" title="All 2 branches missed.">                    if(mediator.getGold() &gt;= 25){</span>
+<span class="nc" id="L226">                        field.getLivestock().add(new Bull(25));</span>
+<span class="nc" id="L227">                        mediator.setGold(mediator.getGold() - 25);</span>
+<span class="nc" id="L228">                        System.out.println(&quot;Congrats on  you new purchase of a: &quot; +</span>
+                                &quot;new 25 month old bull.&quot;);
+                    }else{
+<span class="nc" id="L231">                        System.out.println(&quot;You do not have enough gold.&quot;);</span>
+                    }
+                }
+            }
+<span class="nc bnc" id="L235" title="All 2 branches missed.">            if(mediator.getGold() &lt; 21){</span>
+<span class="nc" id="L236">                continueBuying = false;</span>
+            }
+<span class="nc" id="L238">        }</span>
+<span class="nc" id="L239">    }</span>
+
+    public void slaughterAnimals(Field field){
+        while(true){
+<span class="nc" id="L243">            System.out.println(&quot;\nEnter the number corresponding to the livestock you would &quot; +</span>
+                    &quot;like to sell or -1 to exit.&quot;);
+<span class="nc" id="L245">            field.printInfo();</span>
+<span class="nc" id="L246">            int num = reader.nextInt();</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            if(num == -1){</span>
+<span class="nc" id="L248">                break;</span>
+<span class="nc bnc" id="L249" title="All 4 branches missed.">            }else if(num &gt;= 0 &amp;&amp; num &lt;= field.getLivestock().size()-1){</span>
+<span class="nc" id="L250">                Livestock animal = field.getLivestock().get(num);</span>
+<span class="nc" id="L251">                field.getLivestock().remove(num);</span>
+
+<span class="nc" id="L253">                System.out.println(&quot;We will slaughter this &quot; + animal.getType() +</span>
+<span class="nc" id="L254">                        &quot; and the price is &quot; + animal.getCurrentCostOfAnimal());</span>
+
+<span class="nc" id="L256">                field.addAnimalToBeSlaughtered(animal);</span>
+<span class="nc" id="L257">                field.setHarvest(true);</span>
+<span class="nc" id="L258">            }else {</span>
+<span class="nc" id="L259">                System.out.println(&quot;Invalid input.&quot;);</span>
+            }
+<span class="nc" id="L261">        }</span>
+<span class="nc" id="L262">    }</span>
+
+
+    public void addField(Field field){
+<span class="fc" id="L266">        farmFields.add(field);</span>
+<span class="fc" id="L267">    }</span>
+
+    @Override
+    public List&lt;Field&gt; getFields() {
+<span class="fc" id="L271">        return farmFields;</span>
+    }
+
+    public int getNumberOfFields(){
+<span class="fc" id="L275">        return farmFields.size();</span>
+    }
+
+    @Override
+    public void incrementLevel() {
+<span class="fc" id="L280">        setFarmLevel(getFarmLevel()+1);</span>
+<span class="fc" id="L281">    }</span>
+
+    @Override
+    public void incrementMaxNumOfFields() {
+<span class="fc" id="L285">        setMaxNumOfFields(getMaxNumOfFields() + 1);</span>
+<span class="fc" id="L286">    }</span>
+
+    public String getName() {
+<span class="fc" id="L289">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L293">        this.name = name;</span>
+<span class="fc" id="L294">    }</span>
+
+    public int getFarmLevel() {
+<span class="fc" id="L297">        return farmLevel;</span>
+    }
+
+    public void setFarmLevel(int farmLevel) {
+<span class="fc" id="L301">        this.farmLevel = farmLevel;</span>
+<span class="fc" id="L302">    }</span>
+
+    public double getBank() {
+<span class="fc" id="L305">        return bank;</span>
+    }
+
+    public void setBank(double amount) {
+<span class="fc" id="L309">        this.bank = amount;</span>
+<span class="fc" id="L310">    }</span>
+
+    public double getBonus() {
+<span class="fc" id="L313">        return bonus;</span>
+    }
+
+    public void setBonus(double bonus) {
+<span class="fc" id="L317">        this.bonus = bonus;</span>
+<span class="fc" id="L318">    }</span>
+
+    public int getMaxNumOfFields() {
+<span class="fc" id="L321">        return maxNumOfFields;</span>
+    }
+
+    public void setMaxNumOfFields(int maxLevelOfFields) {
+<span class="fc" id="L325">        this.maxNumOfFields = maxLevelOfFields;</span>
+<span class="fc" id="L326">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

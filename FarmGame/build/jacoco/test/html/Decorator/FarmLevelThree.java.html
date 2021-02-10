@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FarmLevelThree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FarmGame</a> &gt; <a href="index.source.html" class="el_package">Decorator</a> &gt; <span class="el_source">FarmLevelThree.java</span></div><h1>FarmLevelThree.java</h1><pre class="source lang-java linenums">package Decorator;
+
+import Factory.Field;
+
+import java.util.List;
+
+public class FarmLevelThree extends FarmDecorator {
+
+    public FarmLevelThree(Farm homeFarm) {
+<span class="nc" id="L10">        super(homeFarm);</span>
+<span class="nc" id="L11">        incrementLevel();</span>
+<span class="nc" id="L12">        setBonus(1.25);</span>
+<span class="nc" id="L13">        incrementMaxNumOfFields();</span>
+<span class="nc" id="L14">    }</span>
+
+    @Override
+    public void harvest() {
+<span class="nc" id="L18">        this.homeFarm.harvest();</span>
+<span class="nc" id="L19">    }</span>
+
+    @Override
+    public void addField(Field field) {
+<span class="nc" id="L23">        this.homeFarm.addField(field);</span>
+<span class="nc" id="L24">    }</span>
+
+    @Override
+    public List&lt;Field&gt; getFields() {
+<span class="nc" id="L28">        return this.homeFarm.getFields();</span>
+    }
+
+    @Override
+    public String getName() {
+<span class="nc" id="L33">        return this.homeFarm.getName();</span>
+    }
+
+    @Override
+    public void setName(String name) {
+<span class="nc" id="L38">        this.homeFarm.setName(name);</span>
+<span class="nc" id="L39">    }</span>
+
+    @Override
+    public int getNumberOfFields() {
+<span class="nc" id="L43">        return this.homeFarm.getNumberOfFields();</span>
+    }
+
+    @Override
+    public int getFarmLevel() {
+<span class="nc" id="L48">        return this.homeFarm.getFarmLevel();</span>
+    }
+
+    @Override
+    public void setFarmLevel(int farmLevel) {
+<span class="nc" id="L53">        this.homeFarm.setFarmLevel(farmLevel);</span>
+<span class="nc" id="L54">    }</span>
+
+    @Override
+    public void setBonus(double bonus) {
+<span class="nc" id="L58">        this.homeFarm.setBonus(bonus);</span>
+<span class="nc" id="L59">    }</span>
+
+    @Override
+    public double getBonus() {
+<span class="nc" id="L63">        return this.homeFarm.getBonus();</span>
+    }
+
+    @Override
+    public double getBank() {
+<span class="nc" id="L68">        return this.homeFarm.getBank();</span>
+    }
+
+    @Override
+    public void setBank(double amount) {
+<span class="nc" id="L73">        this.homeFarm.setBank(amount);</span>
+<span class="nc" id="L74">    }</span>
+
+    @Override
+    public void cycle() {
+<span class="nc" id="L78">        this.homeFarm.cycle();</span>
+<span class="nc" id="L79">    }</span>
+
+    @Override
+    public void incrementLevel() {
+<span class="nc" id="L83">        this.homeFarm.incrementLevel();</span>
+<span class="nc" id="L84">    }</span>
+
+    @Override
+    public void incrementMaxNumOfFields() {
+<span class="nc" id="L88">        this.homeFarm.incrementMaxNumOfFields();</span>
+<span class="nc" id="L89">    }</span>
+
+    @Override
+    public int getMaxNumOfFields() {
+<span class="nc" id="L93">       return this.homeFarm.getMaxNumOfFields();</span>
+    }
+
+    @Override
+    public void setMaxNumOfFields(int maxLevelOfFields) {
+<span class="nc" id="L98">        this.homeFarm.setMaxNumOfFields(maxLevelOfFields);</span>
+<span class="nc" id="L99">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

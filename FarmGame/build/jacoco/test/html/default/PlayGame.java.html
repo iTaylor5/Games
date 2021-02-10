@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayGame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FarmGame</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">PlayGame.java</span></div><h1>PlayGame.java</h1><pre class="source lang-java linenums">import Decorator.Farm;
+import Decorator.FarmImpl;
+import Decorator.FarmLevelThree;
+import Decorator.FarmLevelTwo;
+import Factory.*;
+import Mediator.Mediator;
+
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * This is the mediator that runs the farms for the game.
+ */
+public class PlayGame implements Mediator {
+
+<span class="fc" id="L18">    private double gold = 200;</span>
+    private List&lt;Farm&gt; farms;
+    private Scanner reader;
+
+<span class="fc" id="L22">    public PlayGame(){</span>
+<span class="fc" id="L23">        farms = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L24">    }</span>
+
+    // Farm farm
+    public void runGame() {
+
+<span class="nc" id="L29">        System.out.println(&quot;DEBUGGING:&quot;);</span>
+<span class="nc" id="L30">        System.out.println(&quot;farms.size() = &quot; + farms.size());</span>
+
+<span class="nc" id="L32">        createFarm();</span>
+
+<span class="nc" id="L34">        System.out.println(&quot;DEBUGGING:&quot;);</span>
+<span class="nc" id="L35">        System.out.println(&quot;farms.size() = &quot; + farms.size());</span>
+
+<span class="nc" id="L37">        reader = new Scanner(System.in, StandardCharsets.UTF_8);  // Reading from System.in</span>
+
+<span class="nc" id="L39">        System.out.println(&quot;\n\t...Running the Game...\n&quot;);</span>
+
+<span class="nc" id="L41">        System.out.println(&quot;PLEASE NOTE: The system will auto repair until you have less &quot; +</span>
+                &quot;than 12 gold remaining&quot;);
+
+<span class="nc" id="L44">        int cycleNUmber = 1;</span>
+
+<span class="nc" id="L46">        boolean gameContinue = true;</span>
+
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        while(gameContinue){</span>
+<span class="nc" id="L49">            System.out.print(&quot;\n---&gt; Beginning cycle number: &quot; + cycleNUmber);</span>
+<span class="nc" id="L50">            System.out.println(&quot;\t :: Total gold: &quot; + getGold() + &quot; &lt;---\n&quot;);</span>
+
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            for (Farm f : farms) {</span>
+
+                /* Print out farm information */
+<span class="nc" id="L55">                System.out.println(&quot;FARM NAME: &quot; + f.getName() +</span>
+<span class="nc" id="L56">                        &quot; -&gt; Level: &quot; + f.getFarmLevel());</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">                if (f.getFields().size() == 1) {</span>
+<span class="nc" id="L58">                    System.out.println(&quot;This farm has &quot; + f.getNumberOfFields() +</span>
+                            &quot; field&quot;);
+                } else {
+<span class="nc" id="L61">                    System.out.println(&quot;This farm has &quot; + f.getNumberOfFields() +</span>
+                            &quot; fields&quot;);
+                }
+
+                /* Check amount of fields */
+<span class="nc bnc" id="L66" title="All 4 branches missed.">                if ((f.getFields().size() &lt; f.getMaxNumOfFields()) &amp;&amp; (getGold() &gt;= 50)) {</span>
+<span class="nc" id="L67">                    System.out.println(&quot;(yes/no) This farm has room to add another field &quot; +</span>
+                            &quot;would you like to do this?&quot;);
+<span class="nc" id="L69">                    reader.nextLine();</span>
+<span class="nc" id="L70">                    String response = reader.nextLine();</span>
+
+<span class="nc bnc" id="L72" title="All 2 branches missed.">                    if (response.equalsIgnoreCase(&quot;yes&quot;)) {</span>
+<span class="nc" id="L73">                        createField(f);</span>
+                    } else {
+<span class="nc" id="L75">                        System.out.println(&quot;Maybe next time...&quot;);</span>
+                    }
+                }
+
+<span class="nc" id="L79">                System.out.println(&quot; %% Summary of this farm's fields: %% &quot;);</span>
+
+<span class="nc bnc" id="L81" title="All 2 branches missed.">                for (Field field : f.getFields()) {</span>
+<span class="nc" id="L82">                    System.out.println(&quot;\n************************************** \n&quot;);</span>
+<span class="nc" id="L83">                    System.out.println(&quot;Field type: &quot; + field.getType());</span>
+<span class="nc" id="L84">                    System.out.printf(&quot;Profit of a harvest is: %.2f\n&quot;, field.getProfit() *</span>
+<span class="nc" id="L85">                            f.getBonus());</span>
+
+<span class="nc" id="L87">                    System.out.println(&quot;Chance of a disease is: &quot; +</span>
+<span class="nc" id="L88">                            field.getChanceOfDisease() * 10 + &quot;%&quot;);</span>
+<span class="nc" id="L89">                    System.out.println();</span>
+<span class="nc" id="L90">                }</span>
+<span class="nc" id="L91">            }</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if(getGold() &gt; 200){</span>
+<span class="nc" id="L94">                System.out.println(&quot;## You have enough money to upgrade one of your farms. ##\n&quot;);</span>
+<span class="nc" id="L95">                int count = 0;</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                for(Farm f : farms){</span>
+<span class="nc" id="L97">                    System.out.print(&quot;(&quot; + count + &quot;)&quot;);</span>
+<span class="nc" id="L98">                    System.out.print(&quot; -&gt; &quot; + f.getName());</span>
+<span class="nc" id="L99">                    System.out.print(&quot;-&gt; Current level: &quot;+ f.getFarmLevel());</span>
+<span class="nc" id="L100">                    count++;</span>
+<span class="nc" id="L101">                }</span>
+<span class="nc" id="L102">                System.out.println(&quot;. It will cost you 200 gold coins.\n&quot;);</span>
+
+<span class="nc" id="L104">                System.out.println(&quot;Enter the corresponding number for the farm you wish &quot; +</span>
+                        &quot;to upgrade or -1 to skip.&quot;);
+
+<span class="nc" id="L107">                int  number = reader.nextInt();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                if(number == -1){</span>
+<span class="nc" id="L109">                    System.out.println(&quot;OK maybe next time.&quot;);</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">                }else if(number &gt;= 0 &amp;&amp; number &lt; farms.size()){</span>
+<span class="nc" id="L111">                    Farm newFarm = upGradeFarm(farms.get(number));</span>
+<span class="nc" id="L112">                    farms.remove(number);</span>
+<span class="nc" id="L113">                    farms.add(number, newFarm);</span>
+<span class="nc" id="L114">                    setGold(getGold() - 200);</span>
+<span class="nc" id="L115">                    System.out.println(&quot;~~~ Congratulations your upgrade was successful ~~~&quot;);</span>
+<span class="nc" id="L116">                }else {</span>
+<span class="nc" id="L117">                    System.out.println(&quot;Invalid input.&quot;);</span>
+                }
+
+            }
+
+<span class="nc" id="L122">            System.out.println(&quot;\n************************************** \n&quot;);</span>
+<span class="nc" id="L123">            System.out.println(&quot;Beginning a cycle...&quot;);</span>
+<span class="nc" id="L124">            cycle();</span>
+<span class="nc" id="L125">            System.out.println(&quot;\n************************************** \n&quot;);</span>
+            /* Everything 10th go give option to buy farm. */
+<span class="nc bnc" id="L127" title="All 4 branches missed.">            if ((cycleNUmber % 10) == 0 &amp;&amp; (gold &gt;= 200)){</span>
+<span class="nc" id="L128">                System.out.println(&quot;(yes/no) Would you like to buy a farm and &quot; +</span>
+                        &quot;extend the empire.&quot;);
+<span class="nc" id="L130">                String response = reader.nextLine();</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                if(response.equalsIgnoreCase(&quot;yes&quot;)){</span>
+<span class="nc" id="L132">                    createFarm();</span>
+<span class="nc" id="L133">                    setGold(getGold()-200);</span>
+                }
+            }
+<span class="nc" id="L136">            gameContinue = checkIfGameOver();</span>
+<span class="nc" id="L137">            cycleNUmber++;</span>
+
+        }
+<span class="nc" id="L140">        System.out.println(&quot;! ! ! ! ! ! ! ! ! ! THE IS GAME OVER ! ! ! ! ! ! ! ! ! !&quot;);</span>
+<span class="nc" id="L141">    }</span>
+
+    /**
+     * Simply checks if there are any  fields where the money can be generated.
+     * @return ture to continue game and false for game over.
+     */
+    public boolean checkIfGameOver(){
+
+<span class="fc" id="L149">        boolean gameContinue = false;</span>
+
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        for(Farm farm : farms){</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">            if(farm.getFields().size() &gt; 0){</span>
+<span class="fc" id="L153">                gameContinue = true;</span>
+            }
+<span class="fc" id="L155">        }</span>
+<span class="fc" id="L156">        return gameContinue;</span>
+    }
+
+    public void cycle(){
+
+        // Each farm has its own cycle.
+        // It calls the dayCycle() and the nightCycle() in the farm class
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        for ( Farm obj : farms){</span>
+<span class="nc" id="L164">            obj.cycle();</span>
+<span class="nc" id="L165">            obj.harvest();</span>
+<span class="nc" id="L166">        }</span>
+
+<span class="nc" id="L168">        System.out.println(&quot;\n\t$$$ Your gold is: &quot; + gold + &quot; $$$\n&quot;);</span>
+<span class="nc" id="L169">    }</span>
+
+
+    public Farm upGradeFarm(Farm farmToUpgrade){
+<span class="nc" id="L173">        Farm newFarm = null;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if(farmToUpgrade.getFarmLevel() == 1){</span>
+<span class="nc" id="L175">            System.out.println(&quot;Upgrading....&quot;);</span>
+<span class="nc" id="L176">            newFarm = new FarmLevelTwo(farmToUpgrade);</span>
+<span class="nc" id="L177">            System.out.println(&quot;+++++&quot;);</span>
+<span class="nc" id="L178">            System.out.println(newFarm.getMaxNumOfFields());</span>
+<span class="nc" id="L179">            System.out.println(newFarm.getFarmLevel());</span>
+<span class="nc" id="L180">            System.out.println(&quot;+++++&quot;);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        } else if(farmToUpgrade.getFarmLevel() == 2) {</span>
+<span class="nc" id="L182">            System.out.println(&quot;Upgrading....&quot;);</span>
+<span class="nc" id="L183">            newFarm = new FarmLevelThree(farmToUpgrade);</span>
+        }
+
+<span class="nc" id="L186">        return newFarm;</span>
+    }
+
+    public void createFarm(){
+<span class="nc" id="L190">        Scanner reader = new Scanner(System.in, &quot;UTF-8&quot;);  // Reading from System.in</span>
+
+<span class="nc" id="L192">        System.out.println(&quot;Lets create a Farm&quot;);</span>
+<span class="nc" id="L193">        System.out.println(&quot;Please enter a name for the farm...&quot;);</span>
+<span class="nc" id="L194">        String farmName = reader.nextLine();</span>
+<span class="nc" id="L195">        Farm originalFarm = new FarmImpl(this, farmName);</span>
+<span class="nc" id="L196">        System.out.println(&quot;Your farm &quot; + originalFarm.getName() + &quot; has been created!\n&quot;);</span>
+<span class="nc" id="L197">        System.out.println(&quot;~~~ Farm Level One is allowed 2 fields ~~~&quot;);</span>
+<span class="nc" id="L198">        System.out.println(&quot;It will cost you 100 gold to prepare these two fields.\n&quot;);</span>
+<span class="nc" id="L199">        System.out.println(&quot;---------------------------------------- &quot;);</span>
+
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        for (int i = 0; i &lt; 2; i++) {</span>
+<span class="nc" id="L202">            createField(originalFarm);</span>
+        }
+
+
+<span class="nc" id="L206">        System.out.println(&quot;---------------------------------------- &quot;);</span>
+<span class="nc" id="L207">        System.out.println(&quot;Farm has been create and your two fields chosen, &quot; +</span>
+                &quot;lets begin the game.&quot;);
+
+
+<span class="nc" id="L211">    }</span>
+
+    public void createField(Farm farm){
+<span class="nc" id="L214">        Scanner reader = new Scanner(System.in, &quot;UTF-8&quot;);  // Reading from System.in</span>
+
+<span class="nc" id="L216">        System.out.println(&quot;Lets create a field for -&gt; &quot; + farm.getName());</span>
+
+<span class="nc" id="L218">        String farmType = &quot;&quot;;</span>
+<span class="nc" id="L219">        String farmSpecialty = &quot;&quot;;</span>
+<span class="nc" id="L220">        boolean incorrect = true;</span>
+
+<span class="nc bnc" id="L222" title="All 2 branches missed.">        while (incorrect) {</span>
+
+<span class="nc" id="L224">            System.out.println(&quot;Please choose a field type: &quot;);</span>
+<span class="nc" id="L225">            System.out.println(&quot;crop or livestock&quot;);</span>
+
+<span class="nc" id="L227">            farmType = reader.nextLine();</span>
+
+<span class="nc bnc" id="L229" title="All 2 branches missed.">            if (farmType.equals(&quot;crop&quot;)) {</span>
+<span class="nc" id="L230">                System.out.println(&quot;Choose type of crop: wheat - maize &quot;);</span>
+
+<span class="nc" id="L232">                farmSpecialty = reader.nextLine().toLowerCase();</span>
+
+<span class="nc bnc" id="L234" title="All 4 branches missed.">                if (farmSpecialty.equals(&quot;wheat&quot;) || farmSpecialty.equals(&quot;maize&quot;)) {</span>
+<span class="nc" id="L235">                    incorrect = false;</span>
+                }
+
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            } else if (farmType.equals(&quot;livestock&quot;)) {</span>
+<span class="nc" id="L239">                System.out.println(&quot;Choose type of livestock: cattle - sheep&quot;);</span>
+
+<span class="nc" id="L241">                farmSpecialty = reader.nextLine().toLowerCase();</span>
+
+<span class="nc bnc" id="L243" title="All 4 branches missed.">                if (farmSpecialty.equals(&quot;cattle&quot;) || farmSpecialty.equals(&quot;sheep&quot;)) {</span>
+<span class="nc" id="L244">                    incorrect = false;</span>
+                }
+
+            } else {
+<span class="nc" id="L248">                System.out.println(&quot;Invalid input try again...&quot;);</span>
+            }
+        }
+
+        /*Farms can be of different types. */
+<span class="nc" id="L253">        Field field = FactoryProvider.getFactory(farmType).create(farmSpecialty);</span>
+        //System.out.println(&quot;The field that was created is: &quot; + field.getType());
+<span class="nc" id="L255">        farm.addField(field);</span>
+
+<span class="nc" id="L257">        System.out.println( farm.getName() + &quot; now has &quot; + farm.getNumberOfFields() + &quot; field.\n&quot;);</span>
+<span class="nc" id="L258">        setGold(getGold()-50);</span>
+
+<span class="nc" id="L260">    }</span>
+
+    @Override
+    public double getGold() {
+<span class="fc" id="L264">        return gold;</span>
+    }
+
+    @Override
+    public void setGold(double gold) {
+<span class="fc" id="L269">        this.gold = gold;</span>
+<span class="fc" id="L270">    }</span>
+
+    @Override
+    public List&lt;Farm&gt; getFarms() {
+<span class="fc" id="L274">        return farms;</span>
+    }
+
+    @Override
+    public void harvest(Farm farm) {
+<span class="nc" id="L279">        setGold(getGold() + farm.getBank());</span>
+<span class="nc" id="L280">        farm.setBank(0);</span>
+<span class="nc" id="L281">    }</span>
+
+    @Override
+    public void addFarm(Farm farm) {
+<span class="fc" id="L285">        farms.add(farm);</span>
+<span class="fc" id="L286">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
