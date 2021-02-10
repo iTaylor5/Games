@@ -8,3 +8,7 @@ The Factory pattern which was used to build different Farm types depending on th
 
 The Mediator was used to help communicate between the Farm objects.
 
+## RUN GAME:
+
+gradle run --console=plain -q
+
