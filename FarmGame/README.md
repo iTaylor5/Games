@@ -1,6 +1,6 @@
 # Farm Game
 
-This game has very basic functionaly but was mainly designed to show case three design patterns. 
+This game has very basic functionaly but was mainly designed to show case three design patterns and display OOP.
 
 The Decorate pattern which was used to add change the behavior of the Farms after an upgrade.
 
